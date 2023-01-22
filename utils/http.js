@@ -1,26 +1,36 @@
 import axios from "axios";
 
 //store all kind of data
-const storeData = async (data, path) => {
-  const response = await axios.post(`${process.env.BACKEND_URL}${path}`, data);
+const storeData = async (data, path, token) => {
+  const response = await axios.post(
+    `${process.env.BACKEND_URL}${path}.json?auth=${token}`,
+    data
+  );
   const id = response.data.name;
 
   return id;
 };
 
 //update all kind of data
-const updateData = (id, data, path) => {
-  return axios.put(`${process.env.BACKEND_URL}${path}/${id}.json`, data);
+const updateData = (id, data, path, token) => {
+  return axios.put(
+    `${process.env.BACKEND_URL}${path}/${id}.json?auth=${token}`,
+    data
+  );
 };
 
 //delete all kind of data
-const deleteData = (id, path) => {
-  return axios.delete(`${process.env.BACKEND_URL}${path}/${id}.json`);
+const deleteData = (id, path, token) => {
+  return axios.delete(
+    `${process.env.BACKEND_URL}${path}/${id}.json?auth=${token}`
+  );
 };
 
 //get all books
-const getBooks = async () => {
-  const response = await axios.get(`${process.env.BACKEND_URL}books.json`);
+const getBooks = async (token) => {
+  const response = await axios.get(
+    `${process.env.BACKEND_URL}books.json?auth=${token}`
+  );
 
   const books = [];
 
@@ -41,9 +51,9 @@ const getBooks = async () => {
 };
 
 //get book by id
-const getBookById = async (id) => {
+const getBookById = async (id, token) => {
   const response = await axios.get(
-    `${process.env.BACKEND_URL}books/${id}.json`
+    `${process.env.BACKEND_URL}books/${id}.json?auth=${token}`
   );
   const book = {
     id,
@@ -59,8 +69,10 @@ const getBookById = async (id) => {
 };
 
 //get all categories
-const getCategories = async () => {
-  const response = await axios.get(`${process.env.BACKEND_URL}categories.json`);
+const getCategories = async (token) => {
+  const response = await axios.get(
+    `${process.env.BACKEND_URL}categories.json?auth=${token}`
+  );
 
   const categories = [];
 
@@ -76,9 +88,9 @@ const getCategories = async () => {
 };
 
 //get Category By Id
-const getCategoryById = async (id) => {
+const getCategoryById = async (id, token) => {
   const response = await axios.get(
-    `${process.env.BACKEND_URL}categories/${id}.json`
+    `${process.env.BACKEND_URL}categories/${id}.json?auth=${token}`
   );
   const category = {
     id,
@@ -89,9 +101,9 @@ const getCategoryById = async (id) => {
 };
 
 //get all the reviews by book
-const getReviews = async (book) => {
+const getReviews = async (book, token) => {
   const response = await axios.get(
-    `${process.env.BACKEND_URL}reviews.json?idBook=${book}`
+    `${process.env.BACKEND_URL}reviews.json?idBook=${book}&auth=${token}`
   );
   const reviews = [];
   for (const key in response.date) {
@@ -107,8 +119,10 @@ const getReviews = async (book) => {
 };
 
 //get all users
-const getUsers = async () => {
-  const response = await axios.get(`${process.env.BACKEND_URL}users.json`);
+const getUsers = async (token) => {
+  const response = await axios.get(
+    `${process.env.BACKEND_URL}users.json?auth=${token}`
+  );
 
   const users = [];
 
@@ -128,9 +142,9 @@ const getUsers = async () => {
 };
 
 //get user By Id
-const getUserById = async (id) => {
+const getUserById = async (id, token) => {
   const response = await axios.get(
-    `${process.env.BACKEND_URL}usres/${id}.json`
+    `${process.env.BACKEND_URL}usres/${id}.json?auth=${token}`
   );
   const category = {
     id,
