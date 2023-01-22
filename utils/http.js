@@ -143,3 +143,16 @@ const getUserById = async (id) => {
 
   return category;
 };
+
+export {
+  storeData,
+  updateData,
+  deleteData,
+  getBooks,
+  getBookById,
+  getCategories,
+  getCategoryById,
+  getReviews,
+  getUsers,
+  getUserById,
+};
