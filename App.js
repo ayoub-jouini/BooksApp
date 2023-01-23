@@ -4,6 +4,7 @@ import AuthContextProvider from './context/auth-context';
 import Button from './components/global/Button/Button';
 import Input from './components/global/Input/Input';
 import { useState } from 'react';
+import Select from './components/global/Select/Select';
 
 export default function App() {
   const [inputState, setInputState] = useState('');
@@ -20,6 +21,18 @@ export default function App() {
           handleChange={handleChange}
           placeholder="default"
           text="warning text"
+        />
+        <Select
+          value={inputState}
+          type="error"
+          handleChange={handleChange}
+          placeholder="default"
+          text="warning text"
+          items={[
+            { label: 'Football', value: 'football' },
+            { label: 'Baseball', value: 'baseball' },
+            { label: 'Hockey', value: 'hockey' },
+          ]}
         />
         <StatusBar style="auto" />
       </View>
