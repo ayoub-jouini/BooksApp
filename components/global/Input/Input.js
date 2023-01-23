@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import colors from '../../../styles/colors';
+import typography from '../../../styles/typography';
 
 const Input = ({ value, handleChange, placeholder, type, text }) => {
   let borderColor;
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
     height: 43,
     borderRadius: 4,
     borderWidth: 2,
+    fontSize: typography.small,
     paddingHorizontal: 15,
   },
 });
