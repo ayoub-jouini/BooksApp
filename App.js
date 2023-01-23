@@ -1,12 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import AuthContextProvider from "./context/auth-context";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import AuthContextProvider from './context/auth-context';
+import Button from './components/global/Button/Button';
 
 export default function App() {
   return (
     <AuthContextProvider>
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Button text="Enabled" type="contained" disabled />
         <StatusBar style="auto" />
       </View>
     </AuthContextProvider>
@@ -16,8 +17,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
