@@ -3,7 +3,13 @@ import colors from '../../../styles/colors';
 import { useFonts, Asap_400Regular } from '@expo-google-fonts/asap';
 import typography from '../../../styles/typography';
 
-const Button = ({ text, handlePress, type = 'texted', disabled = false }) => {
+const Button = ({
+  text,
+  handlePress,
+  type = 'texted',
+  disabled = false,
+  small = false,
+}) => {
   let [fontsLoaded] = useFonts({
     Asap_400Regular,
   });
@@ -32,6 +38,7 @@ const Button = ({ text, handlePress, type = 'texted', disabled = false }) => {
         buttonStyle,
         styles.button,
         disabled ? { opacity: 0.7 } : { opacity: 1 },
+        small ? { height: 38, width: 39 } : { height: 47, width: 156 },
       ]}
       onPress={handlePress}
       disabled={disabled}
@@ -43,8 +50,6 @@ const Button = ({ text, handlePress, type = 'texted', disabled = false }) => {
 
 const styles = StyleSheet.create({
   button: {
-    height: 47,
-    width: 156,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -52,8 +57,6 @@ const styles = StyleSheet.create({
   text: { fontFamily: 'Asap_400Regular', fontSize: typography.small },
   containedButton: {
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   containedText: {
     color: colors.secondaryLight,
