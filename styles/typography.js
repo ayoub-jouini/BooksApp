@@ -1,5 +1,5 @@
 export default {
-  fontFamily: "poppins",
+  fontFamily: 'poppins',
   boldfont: 600,
   h1: 26,
   h2: 24,
@@ -7,4 +7,5 @@ export default {
   small: 16,
   medium: 18,
   large: 20,
+  extraSmall: 14,
 };

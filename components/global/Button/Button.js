@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import colors from '../../../styles/colors';
-import { useFonts, Asap_400Regular } from '@expo-google-fonts/asap';
 import typography from '../../../styles/typography';
 
 const Button = ({
@@ -10,12 +9,6 @@ const Button = ({
   disabled = false,
   small = false,
 }) => {
-  let [fontsLoaded] = useFonts({
-    Asap_400Regular,
-  });
-
-  if (!fontsLoaded) return <Text>loading</Text>;
-
   let buttonStyle;
   let textStyle;
   switch (type) {
@@ -38,7 +31,7 @@ const Button = ({
         buttonStyle,
         styles.button,
         disabled ? { opacity: 0.7 } : { opacity: 1 },
-        small ? { height: 38, width: 39 } : { height: 47, width: 156 },
+        small ? { height: 38, width: 39 } : { height: 47, width: 191 },
       ]}
       onPress={handlePress}
       disabled={disabled}
