@@ -3,8 +3,10 @@ import colors from '../styles/colors';
 import typography from '../styles/typography';
 import Button from '../components/global/Button/Button';
 
-const WelcomeScreen = () => {
-  const handlePress = () => {};
+const WelcomeScreen = ({ navigation }) => {
+  const handlePress = () => {
+    navigation.navigate('SignUp');
+  };
   return (
     <View style={styles.screenContainer}>
       <Image
