@@ -40,6 +40,7 @@ export default function App() {
   return (
     <AuthContextProvider>
       <View style={styles.container}>
+        <Button type="contained" text="button" />
         <Input
           value={inputState}
           type="error"

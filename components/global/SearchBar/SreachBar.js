@@ -16,7 +16,7 @@ const SearchBar = ({
         <Feather
           name="search"
           size={20}
-          color="black"
+          color={colors.secondary}
           style={{ marginLeft: 1 }}
         />
 
@@ -60,7 +60,6 @@ export default SearchBar;
 // styles
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',

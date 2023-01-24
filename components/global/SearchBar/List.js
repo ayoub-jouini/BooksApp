@@ -50,6 +50,7 @@ export default List;
 const styles = StyleSheet.create({
   list__container: {
     padding: 15,
+    margin: 15,
     width: 294,
     borderWidth: 2,
     borderRadius: 27,
