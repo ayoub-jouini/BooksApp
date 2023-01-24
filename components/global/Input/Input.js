@@ -22,7 +22,7 @@ const Input = ({ value, handleChange, placeholder, type, text }) => {
       <TextInput
         style={[styles.input, { borderColor }]}
         value={value}
-        onChange={handleChange}
+        onChangeText={handleChange}
         placeholder={placeholder}
       />
       <Text style={{ color: borderColor }}> {text} </Text>
