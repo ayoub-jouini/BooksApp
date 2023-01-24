@@ -19,6 +19,7 @@ const Input = ({ value, handleChange, placeholder, type, text }) => {
   }
   return (
     <View>
+      <Text style={styles.label}>{placeholder}</Text>
       <TextInput
         style={[styles.input, { borderColor }]}
         value={value}
@@ -38,6 +39,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     fontSize: typography.small,
     paddingHorizontal: 15,
+  },
+  label: {
+    color: colors.tertiary,
+    fontFamily: 'Asap_400Regular',
+    fontSize: typography.medium,
+    marginBottom: 10,
   },
 });
 
