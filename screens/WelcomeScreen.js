@@ -1,14 +1,23 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import colors from '../styles/colors';
 import typography from '../styles/typography';
 import Button from '../components/global/Button/Button';
+import SignInModal from '../components/SignIn/SignInModal';
+import { useState } from 'react';
 
 const WelcomeScreen = ({ navigation }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(!showModal);
+  };
+
   const handlePress = () => {
     navigation.navigate('SignUp');
   };
   return (
     <View style={styles.screenContainer}>
+      <SignInModal showModal={showModal} handleShowModal={handleShowModal} />
       <Image
         source={require('../assets/images/6870523-011.png')}
         style={styles.image}
@@ -20,7 +29,9 @@ const WelcomeScreen = ({ navigation }) => {
       <Button text="GET STARTED" handlePress={handlePress} type="outlined" />
       <View style={styles.textContainerSecond}>
         <Text style={styles.already}>Already Have Account?</Text>
-        <Text style={styles.login}>LOG IN</Text>
+        <Pressable onPress={handleShowModal}>
+          <Text style={styles.login}>LOG IN</Text>
+        </Pressable>
       </View>
     </View>
   );
