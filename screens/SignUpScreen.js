@@ -103,12 +103,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   iconContainer: {
-    height: '20%',
+    flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
     width: 294,
   },
   mainContainer: {
+    flex: 5,
     alignItems: 'center',
   },
   titleContainer: {
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  formContainer: { height: '70%' },
   title: {
     fontFamily: 'Asap_400Regular',
     marginHorizontal: 10,
@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     borderBottomWidth: 1,
-    borderColor: colors.tertiaryLight,
+    borderColor: '#4C4C4C',
+    opacity: 0.1,
   },
   button: {
     marginTop: 15,
