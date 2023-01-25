@@ -3,6 +3,26 @@ import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
 
 const BookPost = ({ image, category, name, author, price, rate }) => {
+  const emptyStarsNumber = 5 - rate;
+
+  let stars = [];
+  let emptyStars = [];
+  for (let i = 0; i < rate; i++) {
+    stars.push(
+      <Image
+        key={'c' + i}
+        source={require('../../../assets/icons/starContained.png')}
+      />
+    );
+  }
+  for (let i = 0; i < emptyStarsNumber; i++) {
+    emptyStars.push(
+      <Image
+        key={i}
+        source={require('../../../assets/icons/starContained.png')}
+      />
+    );
+  }
   return (
     <View style={styles.bookPost}>
       <View style={styles.bookHeader}>
@@ -14,13 +34,7 @@ const BookPost = ({ image, category, name, author, price, rate }) => {
         <Text style={styles.bookCategory}>{category}</Text>
         <Text style={styles.bookName}>{name}</Text>
         <Text style={styles.bookAuthor}>{author}</Text>
-        <View style={styles.bookRateContainer}>
-          <Image source={require('../../../assets/icons/starContained.png')} />
-          <Image source={require('../../../assets/icons/starContained.png')} />
-          <Image source={require('../../../assets/icons/starContained.png')} />
-          <Image source={require('../../../assets/icons/starContained.png')} />
-          <Image source={require('../../../assets/icons/starContained.png')} />
-        </View>
+        <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
         <Text style={styles.bookPrice}>DT {price}</Text>
       </View>
     </View>
