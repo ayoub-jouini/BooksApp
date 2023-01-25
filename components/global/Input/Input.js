@@ -25,6 +25,7 @@ const Input = ({ value, handleChange, placeholder, type, text }) => {
         value={value}
         onChangeText={handleChange}
         placeholder={placeholder}
+        secureTextEntry={placeholder && true}
       />
       <Text style={{ color: borderColor }}> {text} </Text>
     </View>
