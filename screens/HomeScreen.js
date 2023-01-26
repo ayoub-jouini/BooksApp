@@ -5,46 +5,24 @@ import BooksScrollHorizontal from '../components/BooksSection/BooksScrollHorizon
 import SearchBar from '../components/global/SearchBar/SreachBar';
 import { useState } from 'react';
 import List from '../components/global/SearchBar/List';
-
-const booksList = [
-  {
-    image: require('../assets/images/image27.jpg'),
-    category: 'Young Adult',
-    name: 'Nine Lars',
-    author: 'Maureen Liars',
-    rate: 4,
-    price: '16.00',
-  },
-  {
-    image: require('../assets/images/image28.jpg'),
-    category: 'Fantasy',
-    name: 'Sorrow and Starlight',
-    author: 'Caroline Peckham',
-    rate: 4,
-    price: '30.00',
-  },
-  {
-    image: require('../assets/images/image27.jpg'),
-    category: 'Young Adult',
-    name: 'Nine Lars',
-    author: 'Maureen Liars',
-    rate: 4,
-    price: '16.00',
-  },
-  {
-    image: require('../assets/images/image28.jpg'),
-    category: 'Fantasy',
-    name: 'Sorrow and Starlight',
-    author: 'Caroline Peckham',
-    rate: 4,
-    price: '30.00',
-  },
-];
+import { booksList } from '../utils/data';
+import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
 const HomeScreen = () => {
-  const [displaySearch, setDisplaySearch] = useState(false);
+  const bookList = booksList;
 
+  const [displaySearch, setDisplaySearch] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
+
+  const [openBook, setOpenBook] = useState('2');
+
+  const handleOpenBook = (id) => {
+    setOpenBook(id);
+  };
+
+  const handleCloseBook = () => {
+    setOpenBook(null);
+  };
 
   const handleSearchPhrase = (value) => {
     setSearchPhrase(value);
@@ -88,12 +66,24 @@ const HomeScreen = () => {
             )}
           </ScreenHeader>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <BooksScrollHorizontal title="Top Books" booksList={booksList} />
             <BooksScrollHorizontal
+              handleOpenBook={handleOpenBook}
+              title="Top Books"
+              booksList={booksList}
+            />
+            <BooksScrollHorizontal
+              handleOpenBook={handleOpenBook}
               title="Classic Books"
               booksList={booksList}
             />
           </ScrollView>
+
+          {openBook && (
+            <BooksDetailsModal
+              openBook={openBook}
+              handleCloseBook={handleCloseBook}
+            />
+          )}
         </View>
       </View>
     </View>
