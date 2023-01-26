@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     padding: 10,
-    flex: 0.9,
+    flex: 1,
     width: '100%',
     backgroundColor: colors.secondaryLight,
     borderBottomLeftRadius: 52,
