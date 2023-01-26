@@ -11,9 +11,15 @@ import {
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import { booksList } from '../../utils/data';
+import BookRateModal from './BookRateModal';
 
 const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
   const [showModal, setShowModal] = useState(false);
+  const [openBookRateModal, setOpenBookRateModal] = useState(false);
+
+  const handleOpenBookRateModel = () => {
+    setOpenBookRateModal(!openBookRateModal);
+  };
 
   useEffect(() => {
     openBook === null ? setShowModal(false) : setShowModal(true);
@@ -81,7 +87,7 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
                 <Text style={styles.bookDetailsAtribute}>Pricing : </Text>
                 <Text style={styles.bookDetailsValue}>DT {bookData.price}</Text>
               </View>
-              <Pressable>
+              <Pressable onPress={handleOpenBookRateModel}>
                 <View style={styles.RateButton}>
                   <Text style={styles.bookDetailsAtribute}>Rate This Book</Text>
                 </View>
@@ -96,6 +102,13 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
             </Text>
           </View>
         </ScrollView>
+        {openBookRateModal && (
+          <BookRateModal
+            openBookRateModal={openBookRateModal}
+            handleOpenBookRateModel={handleOpenBookRateModel}
+            id={bookData.id}
+          />
+        )}
       </View>
     </Modal>
   );

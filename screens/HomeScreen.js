@@ -14,7 +14,7 @@ const HomeScreen = () => {
   const [displaySearch, setDisplaySearch] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
 
-  const [openBook, setOpenBook] = useState('2');
+  const [openBook, setOpenBook] = useState(null);
 
   const handleOpenBook = (id) => {
     setOpenBook(id);
