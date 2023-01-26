@@ -2,6 +2,9 @@ import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import colors from '../styles/colors';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
 import BooksScrollHorizontal from '../components/BooksSection/BooksScrollHorizontal';
+import SearchBar from '../components/global/SearchBar/SreachBar';
+import { useState } from 'react';
+import List from '../components/global/SearchBar/List';
 
 const booksList = [
   {
@@ -39,22 +42,50 @@ const booksList = [
 ];
 
 const HomeScreen = () => {
-  const handlePress = () => {};
+  const [displaySearch, setDisplaySearch] = useState(false);
+
+  const [searchPhrase, setSearchPhrase] = useState('');
+
+  const handleSearchPhrase = (value) => {
+    setSearchPhrase(value);
+  };
+
+  const handleDisplaySearch = () => {
+    setDisplaySearch(!displaySearch);
+  };
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <ScreenHeader>
-            <Pressable onPress={handlePress}>
+            <Pressable>
               <View style={styles.iconBox}>
                 <Image source={require('../assets/icons/menuIcon.png')} />
               </View>
             </Pressable>
-            <Pressable onPress={handlePress}>
-              <View style={styles.iconBox}>
-                <Image source={require('../assets/icons/searchIcon.png')} />
+            {displaySearch ? (
+              <View>
+                <SearchBar
+                  clicked={displaySearch}
+                  handleClicked={handleDisplaySearch}
+                  searchPhrase={searchPhrase}
+                  handleSerchPhrase={handleSearchPhrase}
+                />
+                {searchPhrase && (
+                  <List
+                    searchPhrase={searchPhrase}
+                    handleClicked={handleSearchPhrase}
+                    data={booksList}
+                  />
+                )}
               </View>
-            </Pressable>
+            ) : (
+              <Pressable onPress={handleDisplaySearch}>
+                <View style={styles.iconBox}>
+                  <Image source={require('../assets/icons/searchIcon.png')} />
+                </View>
+              </Pressable>
+            )}
           </ScreenHeader>
           <ScrollView showsVerticalScrollIndicator={false}>
             <BooksScrollHorizontal title="Top Books" booksList={booksList} />

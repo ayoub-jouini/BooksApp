@@ -7,7 +7,7 @@ import colors from '../../../styles/colors';
 const SearchBar = ({
   clicked,
   searchPhrase,
-  setSearchPhrase,
+  handleSerchPhrase,
   handleClicked,
 }) => {
   return (
@@ -24,34 +24,20 @@ const SearchBar = ({
           style={styles.input}
           placeholder="Search"
           value={searchPhrase}
-          onChangeText={setSearchPhrase}
-          onFocus={handleClicked}
+          onChangeText={handleSerchPhrase}
+          // onFocus={handleClicked}
         />
 
-        {clicked && (
-          <Entypo
-            name="cross"
-            size={20}
-            color="black"
-            style={{ padding: 1 }}
-            onPress={() => {
-              setSearchPhrase('');
-            }}
-          />
-        )}
+        {/* {clicked && ( */}
+        <Entypo
+          name="cross"
+          size={20}
+          color={colors.secondary}
+          style={{ padding: 1, width: '24%' }}
+          onPress={handleClicked}
+        />
+        {/* )} */}
       </View>
-
-      {clicked && (
-        <View>
-          <Button
-            title="Cancel"
-            onPress={() => {
-              Keyboard.dismiss();
-              handleClicked();
-            }}
-          ></Button>
-        </View>
-      )}
     </View>
   );
 };
@@ -63,11 +49,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
-    width: 294,
+    width: 240,
     height: 43,
   },
   searchBar: {
     padding: 10,
+    width: '100%',
     flexDirection: 'row',
     borderWidth: 2,
     borderColor: colors.secondary,
@@ -77,6 +64,6 @@ const styles = StyleSheet.create({
   input: {
     fontSize: typography.small,
     marginLeft: 10,
-    width: '90%',
+    width: '76%',
   },
 });
