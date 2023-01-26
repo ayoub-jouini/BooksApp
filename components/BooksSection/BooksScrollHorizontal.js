@@ -3,7 +3,7 @@ import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import BookPost from '../global/BookPost/BookPost';
 
-const BooksScrollHorizontal = ({ title, booksList }) => {
+const BooksScrollHorizontal = ({ handleOpenBook, title, booksList }) => {
   return (
     <View style={styles.booksSection}>
       <Text style={styles.booksContainerTitle}>{title}</Text>
@@ -16,12 +16,14 @@ const BooksScrollHorizontal = ({ title, booksList }) => {
           {booksList.map((book, key) => (
             <BookPost
               key={key}
+              id={book.id}
               image={book.image}
               category={book.category}
               name={book.name}
               author={book.author}
               rate={book.rate}
               price={book.price}
+              handleOpenBook={handleOpenBook}
             />
           ))}
         </ScrollView>
