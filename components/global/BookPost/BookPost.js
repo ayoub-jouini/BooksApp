@@ -1,8 +1,17 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
 
-const BookPost = ({ image, category, name, author, price, rate }) => {
+const BookPost = ({
+  id,
+  image,
+  category,
+  name,
+  author,
+  price,
+  rate,
+  handleOpenBook,
+}) => {
   const emptyStarsNumber = 5 - rate;
 
   let stars = [];
@@ -24,20 +33,22 @@ const BookPost = ({ image, category, name, author, price, rate }) => {
     );
   }
   return (
-    <View style={styles.bookPost}>
-      <View style={styles.bookHeader}>
-        <View style={styles.bookimage}>
-          <Image source={image} />
+    <Pressable onPress={() => handleOpenBook(id)}>
+      <View style={styles.bookPost}>
+        <View style={styles.bookHeader}>
+          <View style={styles.bookimage}>
+            <Image source={image} />
+          </View>
+        </View>
+        <View style={styles.bookBody}>
+          <Text style={styles.bookCategory}>{category}</Text>
+          <Text style={styles.bookName}>{name}</Text>
+          <Text style={styles.bookAuthor}>{author}</Text>
+          <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
+          <Text style={styles.bookPrice}>DT {price}</Text>
         </View>
       </View>
-      <View style={styles.bookBody}>
-        <Text style={styles.bookCategory}>{category}</Text>
-        <Text style={styles.bookName}>{name}</Text>
-        <Text style={styles.bookAuthor}>{author}</Text>
-        <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
-        <Text style={styles.bookPrice}>DT {price}</Text>
-      </View>
-    </View>
+    </Pressable>
   );
 };
 
