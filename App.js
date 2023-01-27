@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import AuthContextProvider from './context/auth-context';
+import AuthContextProvider, { AuthContext } from './context/auth-context';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { useFonts, Asap_400Regular } from '@expo-google-fonts/asap';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,7 +10,98 @@ import HomeScreen from './screens/HomeScreen';
 import BookmarksScreen from './screens/BookmarksScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from './styles/colors';
-import ProfileScreen from './screens/ProfileScreen';
+import CategoriesScreen from './screens/CategoriesScreen';
+import { useContext } from 'react';
+import { storeData } from './utils/http';
+
+const AuthenticatedStack = () => {
+  const Tab = createBottomTabNavigator();
+
+  return (
+    <Tab.Navigator
+      initialRouteName="home"
+      screenOptions={{
+        tabBarStyle: {
+          height: 70,
+          backgroundColor: colors.primary,
+          borderTopWidth: 0,
+          elevation: 0, // for Android
+          shadowOffset: {
+            width: 0,
+            height: 0, // for iOS
+          },
+        },
+        tabBarShowLabel: false,
+      }}
+    >
+      <Tab.Screen
+        name="categories"
+        component={CategoriesScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image source={require('./assets/icons/categoryIcon.png')} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="home"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image source={require('./assets/icons/homeIcon.png')} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Bookmarks"
+        component={BookmarksScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image source={require('./assets/icons/bookMarkIcon.png')} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+const WelcomeStack = () => {
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const Navigation = () => {
+  const authContext = useContext(AuthContext);
+
+  return (
+    <NavigationContainer>
+      {!authContext.isAuthenticated && <WelcomeStack />}
+      {authContext.isAuthenticated && <AuthenticatedStack />}
+    </NavigationContainer>
+  );
+};
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -19,85 +110,11 @@ export default function App() {
 
   if (!fontsLoaded) return <Text>loading</Text>;
 
-  const Stack = createNativeStackNavigator();
-
-  const Tab = createBottomTabNavigator();
-
   return (
     <AuthContextProvider>
       <View style={styles.container}>
         <SafeAreaView style={styles.container}>
-          <NavigationContainer>
-            {/* <Stack.Navigator>
-              <Stack.Screen
-                name="welcome"
-                component={WelcomeScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SignUp"
-                component={SignUpScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="home"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator> */}
-            <Tab.Navigator
-              initialRouteName="home"
-              screenOptions={{
-                tabBarStyle: {
-                  height: 70,
-                  backgroundColor: colors.primary,
-                  borderTopWidth: 0,
-                  elevation: 0, // for Android
-                  shadowOffset: {
-                    width: 0,
-                    height: 0, // for iOS
-                  },
-                },
-                tabBarShowLabel: false,
-              }}
-            >
-              <Tab.Screen
-                name="profile"
-                component={ProfileScreen}
-                options={{
-                  headerShown: false,
-                  tabBarIcon: ({ color, size }) => (
-                    <Image
-                      source={require('./assets/icons/categoryIcon.png')}
-                    />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="home"
-                component={HomeScreen}
-                options={{
-                  headerShown: false,
-                  tabBarIcon: ({ color, size }) => (
-                    <Image source={require('./assets/icons/homeIcon.png')} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="Bookmarks"
-                component={BookmarksScreen}
-                options={{
-                  headerShown: false,
-                  tabBarIcon: ({ color, size }) => (
-                    <Image
-                      source={require('./assets/icons/bookMarkIcon.png')}
-                    />
-                  ),
-                }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer>
-
+          <Navigation />
           <StatusBar style="auto" />
         </SafeAreaView>
       </View>
