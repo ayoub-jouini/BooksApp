@@ -13,15 +13,15 @@ const List = ({ searchPhrase, handleClicked, data }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === '') {
-      return <Item name={item.name} />;
+      return <Item name={item.bookName} />;
     }
     // filter of the name
     if (
-      item.name
+      item.bookName
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
     ) {
-      return <Item name={item.name} />;
+      return <Item name={item.bookName} />;
     }
   };
 

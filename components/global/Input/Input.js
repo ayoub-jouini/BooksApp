@@ -2,7 +2,14 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
 
-const Input = ({ value, handleChange, placeholder, type, text }) => {
+const Input = ({
+  value,
+  handleChange,
+  placeholder,
+  type,
+  text,
+  secure = false,
+}) => {
   let borderColor;
   switch (type) {
     case 'success':
@@ -25,7 +32,7 @@ const Input = ({ value, handleChange, placeholder, type, text }) => {
         value={value}
         onChangeText={handleChange}
         placeholder={placeholder}
-        secureTextEntry={placeholder && true}
+        secureTextEntry={secure}
       />
       <Text style={{ color: borderColor }}> {text} </Text>
     </View>
