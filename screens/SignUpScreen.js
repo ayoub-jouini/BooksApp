@@ -1,19 +1,25 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import Input from '../components/global/Input/Input';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../components/global/Button/Button';
 import colors from '../styles/colors';
 import typography from '../styles/typography';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { createUser } from '../utils/auth';
+import LoadingOverlay from '../components/global/LoadingOverlay/LoadingOverlay';
+import { AuthContext } from '../context/auth-context';
 
 const SignUpScreen = ({ navigation }) => {
+  const authContext = useContext(AuthContext);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [disabled, setDisabled] = useState(false);
+
+  const [isAuth, setIsAuth] = useState(false);
 
   const handlePress = () => {
     navigation.navigate('welcome');
@@ -32,9 +38,23 @@ const SignUpScreen = ({ navigation }) => {
     setPassword(value);
   };
 
-  const handleSignUp = () => {
-    createUser(email, password);
+  const handleSignUp = async () => {
+    setIsAuth(true);
+    try {
+      const { token, userAdress, userId } = await createUser(email, password);
+      authContext.authenticate(token, userId, userAdress);
+    } catch (e) {
+      Alert.alert(
+        'Authentication faild!',
+        'Could not log you in, Please check you credentials or try again later'
+      );
+    }
+    setIsAuth(false);
   };
+
+  if (isAuth) {
+    return <LoadingOverlay color={colors.primary} />;
+  }
 
   return (
     <View style={styles.screenContainer}>

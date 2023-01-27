@@ -3,13 +3,23 @@ import colors from '../styles/colors';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
 import BooksScrollHorizontal from '../components/BooksSection/BooksScrollHorizontal';
 import SearchBar from '../components/global/SearchBar/SreachBar';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import List from '../components/global/SearchBar/List';
-import { booksList } from '../utils/data';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
+import { getBooks } from '../utils/http';
+import { AuthContext } from '../context/auth-context';
 
 const HomeScreen = () => {
-  const bookList = booksList;
+  const authContext = useContext(AuthContext);
+  const [booksList, setBooksList] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getBooks(authContext.token);
+      setBooksList(data);
+    };
+    getData();
+  }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -31,12 +41,17 @@ const HomeScreen = () => {
   const handleDisplaySearch = () => {
     setDisplaySearch(!displaySearch);
   };
+
+  //logOut
+  const handleLogOut = () => {
+    authContext.logout();
+  };
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <ScreenHeader>
-            <Pressable>
+            <Pressable onPress={handleLogOut}>
               <View style={styles.iconBox}>
                 <Image source={require('../assets/icons/menuIcon.png')} />
               </View>
@@ -65,18 +80,20 @@ const HomeScreen = () => {
               </Pressable>
             )}
           </ScreenHeader>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <BooksScrollHorizontal
-              handleOpenBook={handleOpenBook}
-              title="Top Books"
-              booksList={booksList}
-            />
-            <BooksScrollHorizontal
-              handleOpenBook={handleOpenBook}
-              title="Classic Books"
-              booksList={booksList}
-            />
-          </ScrollView>
+          {booksList && (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <BooksScrollHorizontal
+                handleOpenBook={handleOpenBook}
+                title="Top Books"
+                booksList={booksList}
+              />
+              <BooksScrollHorizontal
+                handleOpenBook={handleOpenBook}
+                title="Classic Books"
+                booksList={booksList}
+              />
+            </ScrollView>
+          )}
 
           {openBook && (
             <BooksDetailsModal

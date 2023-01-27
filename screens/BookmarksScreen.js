@@ -9,14 +9,24 @@ import {
 import colors from '../styles/colors';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
 import SearchBar from '../components/global/SearchBar/SreachBar';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import List from '../components/global/SearchBar/List';
-import { booksList } from '../utils/data';
 import typography from '../styles/typography';
 import BookPostHorizontal from '../components/global/BookPost/BookPostHorizontal';
+import { AuthContext } from '../context/auth-context';
+import { getBooks } from '../utils/http';
 
 const BookMarksScreen = () => {
-  const bookList = booksList;
+  const authContext = useContext(AuthContext);
+  const [booksList, setBooksList] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getBooks(authContext.token);
+      setBooksList(data);
+    };
+    getData();
+  }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
 
@@ -85,7 +95,7 @@ const BookMarksScreen = () => {
                   id={book.id}
                   image={book.image}
                   category={book.category}
-                  name={book.name}
+                  name={book.bookName}
                   author={book.author}
                   rate={book.rate}
                   price={book.price}
