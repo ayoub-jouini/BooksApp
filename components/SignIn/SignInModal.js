@@ -1,15 +1,29 @@
-import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import colors from '../../styles/colors';
 import Input from '../global/Input/Input';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../global/Button/Button';
 import { login } from '../../utils/auth';
+import LoadingOverlay from '../global/LoadingOverlay/LoadingOverlay';
+import { AuthContext } from '../../context/auth-context';
 
 const SignInModal = ({ showModal, handleShowModal }) => {
+  const authContext = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [disabled, setDisabled] = useState(false);
+
+  const [isAuth, setIsAuth] = useState(false);
 
   const handleEmail = (value) => {
     setEmail(value);
@@ -18,9 +32,24 @@ const SignInModal = ({ showModal, handleShowModal }) => {
     setPassword(value);
   };
 
-  const handleSignIn = () => {
-    login(email, password);
+  const handleSignIn = async () => {
+    handleShowModal();
+    setIsAuth(true);
+    try {
+      const { token, userAdress, userId } = await login(email, password);
+      authContext.authenticate(token, userId, userAdress);
+    } catch (err) {
+      Alert.alert(
+        'Authentication faild!',
+        'Could not log you in, Please check you credentials or try again later'
+      );
+    }
+    setIsAuth(false);
   };
+
+  if (isAuth) {
+    return <LoadingOverlay color={colors.secondaryLight} />;
+  }
 
   return (
     <Modal
