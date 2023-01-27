@@ -10,14 +10,24 @@ import {
 import colors from '../styles/colors';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
 import SearchBar from '../components/global/SearchBar/SreachBar';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import List from '../components/global/SearchBar/List';
-import { booksList, categoriesList } from '../utils/data';
 import typography from '../styles/typography';
 import CategoryPost from '../components/global/CategoryPost/CategoryPost';
+import { AuthContext } from '../context/auth-context';
+import { getCategories } from '../utils/http';
 
 const CategoriesScreen = () => {
-  const bookList = booksList;
+  const authContext = useContext(AuthContext);
+  const [categoriesList, setCategoriesList] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getCategories(authContext.token);
+      setCategoriesList(data);
+    };
+    getData();
+  }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
 

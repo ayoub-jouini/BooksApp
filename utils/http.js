@@ -80,20 +80,39 @@ const getBookById = async (id, token) => {
 
 //get all categories
 const getCategories = async (token) => {
-  const response = await axios.get(
-    `${process.env.BACKEND_URL}categories.json?auth=${token}`
-  );
+  // const response = await axios.get(
+  //   `${process.env.BACKEND_URL}categories.json?auth=${token}`
+  // );
 
+  // const categories = [];
+
+  // for (const key in response.date) {
+  //   const category = {
+  //     id: key,
+  //     categoryName: response.data[key].categoryName,
+  //   };
+  //   categories.push(category);
+  // }
+
+  // return categories;
+  let response;
+  try {
+    response = await axios.get(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories.json?auth=${token}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
   const categories = [];
 
-  for (const key in response.date) {
+  for (let key in response.data) {
     const category = {
       id: key,
-      categoryName: response.data[key].categoryName,
+      image: response.data[key].image,
+      name: response.data[key].name,
     };
     categories.push(category);
   }
-
   return categories;
 };
 

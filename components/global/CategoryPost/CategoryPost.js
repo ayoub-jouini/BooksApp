@@ -6,7 +6,7 @@ const CategoryPost = ({ name, image }) => {
     <Pressable>
       <ImageBackground
         borderRadius={12}
-        source={image}
+        source={{ uri: image }}
         style={styles.SingleCategory}
       >
         <Text style={styles.categoryName}>{name}</Text>
