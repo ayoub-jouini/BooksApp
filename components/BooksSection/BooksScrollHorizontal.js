@@ -19,7 +19,7 @@ const BooksScrollHorizontal = ({ handleOpenBook, title, booksList }) => {
               id={book.id}
               image={book.image}
               category={book.category}
-              name={book.name}
+              name={book.bookName}
               author={book.author}
               rate={book.rate}
               price={book.price}
