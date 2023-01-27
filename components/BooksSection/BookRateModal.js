@@ -5,35 +5,35 @@ import typography from '../../styles/typography';
 import { booksList } from '../../utils/data';
 
 const BookRateModal = ({ openBookRateModal, handleOpenBookRateModel, id }) => {
-  const bookData = booksList.find((book) => book.id === id);
+  // const bookData = booksList.find((book) => book.id === id);
 
-  const emptyStarsNumber = 5 - bookData.rate;
+  // const emptyStarsNumber = 5 - bookData.rate;
 
-  let stars = [];
-  let emptyStars = [];
+  // let stars = [];
+  // let emptyStars = [];
 
-  for (let i = 0; i < bookData.rate; i++) {
-    stars.push(
-      <View key={'c' + i} style={styles.starContainer}>
-        <Image
-          resizeMode="contain"
-          style={styles.star}
-          source={require('../../assets/icons/starContained.png')}
-        />
-      </View>
-    );
-  }
-  for (let i = 0; i < emptyStarsNumber; i++) {
-    emptyStars.push(
-      <View key={i} style={styles.starContainer}>
-        <Image
-          resizeMode="contain"
-          style={styles.star}
-          source={require('../../assets/icons/starContained.png')}
-        />
-      </View>
-    );
-  }
+  // for (let i = 0; i < bookData.rate; i++) {
+  //   stars.push(
+  //     <View key={'c' + i} style={styles.starContainer}>
+  //       <Image
+  //         resizeMode="contain"
+  //         style={styles.star}
+  //         source={require('../../assets/icons/starContained.png')}
+  //       />
+  //     </View>
+  //   );
+  // }
+  // for (let i = 0; i < emptyStarsNumber; i++) {
+  //   emptyStars.push(
+  //     <View key={i} style={styles.starContainer}>
+  //       <Image
+  //         resizeMode="contain"
+  //         style={styles.star}
+  //         source={require('../../assets/icons/starContained.png')}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   return (
     <Modal visible={openBookRateModal} transparent={true} style={styles.modal}>
@@ -41,7 +41,43 @@ const BookRateModal = ({ openBookRateModal, handleOpenBookRateModel, id }) => {
         <View style={styles.mainContainer}>
           <Text style={styles.firstLine}>Your opinion matter to us!</Text>
           <Text style={styles.secondLine}>do you like this book?</Text>
-          <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
+          <View style={styles.bookRateContainer}>
+            <View style={styles.starContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.star}
+                source={require('../../assets/icons/starContained.png')}
+              />
+            </View>
+            <View style={styles.starContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.star}
+                source={require('../../assets/icons/starContained.png')}
+              />
+            </View>
+            <View style={styles.starContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.star}
+                source={require('../../assets/icons/starContained.png')}
+              />
+            </View>
+            <View style={styles.starContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.star}
+                source={require('../../assets/icons/starContained.png')}
+              />
+            </View>
+            <View style={styles.starContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.star}
+                source={require('../../assets/icons/starContained.png')}
+              />
+            </View>
+          </View>
           <Button type="contained" text="Submit" />
           <Pressable onPress={handleOpenBookRateModel}>
             <Text style={styles.laterButton}>Later</Text>
