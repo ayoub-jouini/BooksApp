@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   Image,
   Modal,
@@ -12,6 +12,8 @@ import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import { booksList } from '../../utils/data';
 import BookRateModal from './BookRateModal';
+import { AuthContext } from '../../context/auth-context';
+import { getBookById } from '../../utils/http';
 
 const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +28,18 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
   }, [openBook]);
 
   //book data
-  const bookData = booksList.find((book) => book.id === openBook);
+  const authContext = useContext(AuthContext);
+  const [bookData, setBookData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getBookById(openBook, authContext.token);
+      setBookData(data);
+    };
+    getData();
+  }, []);
+  if (bookData === []) {
+    return <LoadingOverlay color={colors.primary} />;
+  }
 
   const emptyStarsNumber = 5 - bookData.rate;
 
@@ -64,7 +77,7 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
           <View style={styles.bookDetailsContainer}>
             <Image
               resizeMode="contain"
-              source={bookData.image}
+              source={{ uri: bookData.image }}
               style={styles.bookImage}
             />
             <View style={styles.booksDetails}>
