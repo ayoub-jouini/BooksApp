@@ -37,7 +37,7 @@ const BookPostHorizontal = ({
       <View style={styles.bookPost}>
         <View style={styles.bookHeader}>
           <View style={styles.bookimage}>
-            <Image source={image} />
+            <Image source={{ uri: image }} style={{ width: 81, height: 128 }} />
           </View>
         </View>
         <View style={styles.bookBody}>
