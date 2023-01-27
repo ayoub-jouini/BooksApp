@@ -1,6 +1,5 @@
 import {
   Image,
-  ImageBackground,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -15,7 +14,8 @@ import List from '../components/global/SearchBar/List';
 import typography from '../styles/typography';
 import CategoryPost from '../components/global/CategoryPost/CategoryPost';
 import { AuthContext } from '../context/auth-context';
-import { getCategories } from '../utils/http';
+import { getBooks, getCategories } from '../utils/http';
+import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
 const CategoriesScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -24,6 +24,16 @@ const CategoriesScreen = ({ navigation }) => {
 
   const authContext = useContext(AuthContext);
   const [categoriesList, setCategoriesList] = useState([]);
+
+  const [booksList, setBooksList] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getBooks(authContext.token);
+      setBooksList(data);
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -34,11 +44,19 @@ const CategoriesScreen = ({ navigation }) => {
   }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
-
+  const [openBook, setOpenBook] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState('');
 
   const handleSearchPhrase = (value) => {
     setSearchPhrase(value);
+  };
+
+  const handleOpenBook = (id) => {
+    setOpenBook(id);
+    setSearchPhrase('');
+  };
+  const handleCloseBook = () => {
+    setOpenBook(null);
   };
 
   const handleDisplaySearch = () => {
@@ -64,6 +82,7 @@ const CategoriesScreen = ({ navigation }) => {
                 />
                 {searchPhrase && (
                   <List
+                    handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
                     data={booksList}
@@ -92,6 +111,12 @@ const CategoriesScreen = ({ navigation }) => {
               ))}
             </View>
           </ScrollView>
+          {openBook && (
+            <BooksDetailsModal
+              openBook={openBook}
+              handleCloseBook={handleCloseBook}
+            />
+          )}
         </View>
       </View>
     </View>
