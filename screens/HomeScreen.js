@@ -9,7 +9,11 @@ import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 import { getBooks } from '../utils/http';
 import { AuthContext } from '../context/auth-context';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+  const handleNavigation = () => {
+    navigation.navigate('Profile');
+  };
+
   const authContext = useContext(AuthContext);
   const [booksList, setBooksList] = useState([]);
 
@@ -28,6 +32,7 @@ const HomeScreen = () => {
 
   const handleOpenBook = (id) => {
     setOpenBook(id);
+    setSearchPhrase('');
   };
 
   const handleCloseBook = () => {
@@ -42,18 +47,14 @@ const HomeScreen = () => {
     setDisplaySearch(!displaySearch);
   };
 
-  //logOut
-  const handleLogOut = () => {
-    authContext.logout();
-  };
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <ScreenHeader>
-            <Pressable onPress={handleLogOut}>
+            <Pressable onPress={handleNavigation}>
               <View style={styles.iconBox}>
-                <Image source={require('../assets/icons/menuIcon.png')} />
+                <Image source={require('../assets/icons/profileIcon.png')} />
               </View>
             </Pressable>
             {displaySearch ? (
@@ -66,6 +67,7 @@ const HomeScreen = () => {
                 />
                 {searchPhrase && (
                   <List
+                    handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
                     data={booksList}

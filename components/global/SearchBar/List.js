@@ -1,19 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
 import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
 
-const Item = ({ name }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{name}</Text>
-  </View>
+const Item = ({ id, name, handleOpenBook }) => (
+  <Pressable onPress={() => handleOpenBook(id)} style={styles.itemContainer}>
+    <View style={styles.item}>
+      <Text style={styles.title}>{name}</Text>
+    </View>
+  </Pressable>
 );
 
-const List = ({ searchPhrase, handleClicked, data }) => {
+const List = ({ searchPhrase, handleClicked, data, handleOpenBook }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === '') {
-      return <Item name={item.bookName} />;
+      return (
+        <Item
+          id={item.id}
+          name={item.bookName}
+          handleOpenBook={handleOpenBook}
+        />
+      );
     }
     // filter of the name
     if (
@@ -21,14 +29,21 @@ const List = ({ searchPhrase, handleClicked, data }) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ''))
     ) {
-      return <Item name={item.bookName} />;
+      return (
+        <Item
+          id={item.id}
+          name={item.bookName}
+          handleOpenBook={handleOpenBook}
+        />
+      );
     }
   };
 
   return (
     <View style={styles.list__container}>
-      <View onStartShouldSetResponder={handleClicked}>
+      <View onStartShouldSetResponder={handleClicked} style={styles.flatList}>
         <FlatList
+          style={styles.flatList}
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
@@ -53,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondaryLight,
   },
   item: {
-    marginVertical: 5,
+    paddingVertical: 5,
     borderBottomWidth: 2,
     borderBottomColor: colors.secondaryLight,
   },
@@ -61,4 +76,8 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     marginBottom: 5,
   },
+  itemContainer: {
+    width: '100%',
+  },
+  flatList: { width: '100%' },
 });

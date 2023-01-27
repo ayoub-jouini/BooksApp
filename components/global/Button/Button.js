@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
   text: { fontFamily: 'Asap_400Regular', fontSize: typography.small },
   containedButton: {
     backgroundColor: colors.primary,
+    borderColor: colors.secondaryLight,
+    borderWidth: 1,
   },
   containedText: {
     color: colors.secondaryLight,

@@ -17,7 +17,11 @@ import CategoryPost from '../components/global/CategoryPost/CategoryPost';
 import { AuthContext } from '../context/auth-context';
 import { getCategories } from '../utils/http';
 
-const CategoriesScreen = () => {
+const CategoriesScreen = ({ navigation }) => {
+  const handleNavigation = () => {
+    navigation.navigate('Profile');
+  };
+
   const authContext = useContext(AuthContext);
   const [categoriesList, setCategoriesList] = useState([]);
 
@@ -45,9 +49,9 @@ const CategoriesScreen = () => {
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <ScreenHeader>
-            <Pressable>
+            <Pressable onPress={handleNavigation}>
               <View style={styles.iconBox}>
-                <Image source={require('../assets/icons/menuIcon.png')} />
+                <Image source={require('../assets/icons/profileIcon.png')} />
               </View>
             </Pressable>
             {displaySearch ? (

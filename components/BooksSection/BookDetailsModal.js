@@ -81,7 +81,7 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
               style={styles.bookImage}
             />
             <View style={styles.booksDetails}>
-              <Text style={styles.bookTitle}>{bookData.name}</Text>
+              <Text style={styles.bookTitle}>{bookData.bookName}</Text>
               <View style={styles.bookDetailElement}>
                 <Text style={styles.bookDetailsAtribute}>Author : </Text>
                 <Text style={styles.bookDetailsValue}>{bookData.author}</Text>

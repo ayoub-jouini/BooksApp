@@ -12,65 +12,83 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from './styles/colors';
 import CategoriesScreen from './screens/CategoriesScreen';
 import { useContext } from 'react';
-import { storeData } from './utils/http';
+import ProfileScreen from './screens/ProfileScreen';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AuthenticatedStack = () => {
-  const Tab = createBottomTabNavigator();
-
-  return (
-    <Tab.Navigator
-      initialRouteName="home"
-      screenOptions={{
-        tabBarStyle: {
-          height: 70,
-          backgroundColor: colors.primary,
-          borderTopWidth: 0,
-          elevation: 0, // for Android
-          shadowOffset: {
-            width: 0,
-            height: 0, // for iOS
+  const Tabs = () => {
+    return (
+      <Tab.Navigator
+        initialRouteName="home"
+        screenOptions={{
+          tabBarStyle: {
+            height: 70,
+            backgroundColor: colors.primary,
+            borderTopWidth: 0,
+            elevation: 0, // for Android
+            shadowOffset: {
+              width: 0,
+              height: 0, // for iOS
+            },
           },
-        },
-        tabBarShowLabel: false,
-      }}
-    >
-      <Tab.Screen
-        name="categories"
-        component={CategoriesScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={require('./assets/icons/categoryIcon.png')} />
-          ),
+          tabBarShowLabel: false,
         }}
+      >
+        <Tab.Screen
+          name="categories"
+          component={CategoriesScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Image source={require('./assets/icons/categoryIcon.png')} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="home"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Image source={require('./assets/icons/homeIcon.png')} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Bookmarks"
+          component={BookmarksScreen}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Image source={require('./assets/icons/bookMarkIcon.png')} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+
+  const Stacks = (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="mainStack"
+        component={Tabs}
+        options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={require('./assets/icons/homeIcon.png')} />
-          ),
-        }}
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="Bookmarks"
-        component={BookmarksScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={require('./assets/icons/bookMarkIcon.png')} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
+
+  return Stacks;
 };
 
 const WelcomeStack = () => {
-  const Stack = createNativeStackNavigator();
-
   return (
     <Stack.Navigator>
       <Stack.Screen

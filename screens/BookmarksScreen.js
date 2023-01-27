@@ -16,7 +16,11 @@ import BookPostHorizontal from '../components/global/BookPost/BookPostHorizontal
 import { AuthContext } from '../context/auth-context';
 import { getBooks } from '../utils/http';
 
-const BookMarksScreen = () => {
+const BookMarksScreen = ({ navigation }) => {
+  const handleNavigation = () => {
+    navigation.navigate('Profile');
+  };
+
   const authContext = useContext(AuthContext);
   const [booksList, setBooksList] = useState([]);
 
@@ -55,9 +59,9 @@ const BookMarksScreen = () => {
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <ScreenHeader>
-            <Pressable>
+            <Pressable onPress={handleNavigation}>
               <View style={styles.iconBox}>
-                <Image source={require('../assets/icons/menuIcon.png')} />
+                <Image source={require('../assets/icons/profileIcon.png')} />
               </View>
             </Pressable>
             {displaySearch ? (
@@ -70,6 +74,7 @@ const BookMarksScreen = () => {
                 />
                 {searchPhrase && (
                   <List
+                    handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
                     data={booksList}
