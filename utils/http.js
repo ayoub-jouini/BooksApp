@@ -1,11 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
 //store all kind of data
 const storeData = async (data, path, token) => {
-  const response = await axios.post(
-    `${process.env.BACKEND_URL}${path}.json?auth=${token}`,
-    data
-  );
+  let response;
+  try {
+    response = await axios.post(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/${path}.json?auth=${token}`,
+      data
+    );
+  } catch (err) {
+    console.log(err);
+  }
   const id = response.data.name;
 
   return id;
@@ -28,41 +33,46 @@ const deleteData = (id, path, token) => {
 
 //get all books
 const getBooks = async (token) => {
-  const response = await axios.get(
-    `${process.env.BACKEND_URL}books.json?auth=${token}`
-  );
-
+  let response;
+  try {
+    response = await axios.get(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/books.json?auth=${token}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
   const books = [];
 
-  for (const key in response.date) {
+  for (let key in response.data) {
     const book = {
       id: key,
-      title: response.data[key].title,
+      bookName: response.data[key].bookName,
       author: response.data[key].author,
       category: response.data[key].category,
       description: response.data[key].description,
       price: response.data[key].price,
-      coverphoto: response.data[key].coverPhoto,
+      image: response.data[key].image,
+      rate: response.data[key].rate,
     };
     books.push(book);
   }
-
   return books;
 };
 
 //get book by id
 const getBookById = async (id, token) => {
   const response = await axios.get(
-    `${process.env.BACKEND_URL}books/${id}.json?auth=${token}`
+    `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/books/${id}.json?auth=${token}`
   );
   const book = {
     id,
-    title: response.data.title,
+    bookName: response.data.bookName,
     author: response.data.author,
     category: response.data.category,
     description: response.data.description,
     price: response.data.price,
-    coverphoto: response.data.coverPhoto,
+    image: response.data.image,
+    rate: response.data.rate,
   };
 
   return book;

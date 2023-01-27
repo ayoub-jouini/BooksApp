@@ -1,26 +1,47 @@
-import axios from "axios";
+import axios from 'axios';
 
-const auth = async (mode, email, password) => {
-  const response = await axios.post(
-    `${process.env.AUTH_URL}${mode}?key=${process.env.API_KEY}`,
-    {
-      email,
-      password,
-      returnSecureToken: true,
-    }
-  );
+const createUser = async (email, password) => {
+  let response;
+  try {
+    response = await axios.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCyiL7Sp-sebtwEhrS4_4PpRP3DercnjTU',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true,
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
 
   const token = response.data.idToken;
+  const userAdress = response.data.email;
+  const userId = response.data.localId;
 
-  return token;
+  return { token, userAdress, userId };
 };
 
-const createUser = (email, password) => {
-  return auth("signUp", email, password);
-};
+const login = async (email, password) => {
+  let response;
+  try {
+    response = await axios.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCyiL7Sp-sebtwEhrS4_4PpRP3DercnjTU',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true,
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
 
-const login = (email, password) => {
-  return auth("signInWithPassword", email, password);
+  const token = response.data.idToken;
+  const userAdress = response.data.email;
+  const userId = response.data.localId;
+
+  return { token, userAdress, userId };
 };
 
 export { createUser, login };
