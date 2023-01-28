@@ -22,6 +22,10 @@ const CategoriesScreen = ({ navigation }) => {
     navigation.navigate('Profile');
   };
 
+  const handleNavigateToCategory = (id) => {
+    navigation.navigate('category', { categoryID: id });
+  };
+
   const authContext = useContext(AuthContext);
   const [categoriesList, setCategoriesList] = useState([]);
 
@@ -103,11 +107,12 @@ const CategoriesScreen = ({ navigation }) => {
             </View>
             <View style={styles.CategoriesContainer}>
               {categoriesList.map((category, key) => (
-                <CategoryPost
+                <Pressable
+                  onPress={() => handleNavigateToCategory(category.id)}
                   key={key}
-                  image={category.image}
-                  name={category.name}
-                />
+                >
+                  <CategoryPost image={category.image} name={category.name} />
+                </Pressable>
               ))}
             </View>
           </ScrollView>

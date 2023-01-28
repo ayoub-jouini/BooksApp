@@ -1,4 +1,10 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import BookPost from '../global/BookPost/BookPost';
@@ -26,25 +32,33 @@ const BooksScrollHorizontal = ({ handleOpenBook, category }) => {
     <View style={styles.booksSection}>
       <Text style={styles.booksContainerTitle}>{category}</Text>
       <View>
-        <ScrollView
-          style={styles.booksContainer}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          {booksList.map((book, key) => (
-            <BookPost
-              key={key}
-              id={book.id}
-              image={book.image}
-              category={book.category}
-              name={book.bookName}
-              author={book.author}
-              rate={book.rate}
-              price={book.price}
-              handleOpenBook={handleOpenBook}
-            />
-          ))}
-        </ScrollView>
+        {booksList ? (
+          <ScrollView
+            style={styles.booksContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {booksList.map((book, key) => (
+              <BookPost
+                key={key}
+                id={book.id}
+                image={book.image}
+                category={book.category}
+                name={book.bookName}
+                author={book.author}
+                rate={book.rate}
+                price={book.price}
+                handleOpenBook={handleOpenBook}
+              />
+            ))}
+          </ScrollView>
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color={colors.primary}
+            style={styles.loading}
+          />
+        )}
       </View>
     </View>
   );

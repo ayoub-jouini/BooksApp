@@ -3,15 +3,13 @@ import colors from '../../../styles/colors';
 
 const CategoryPost = ({ name, image }) => {
   return (
-    <Pressable>
-      <ImageBackground
-        borderRadius={12}
-        source={{ uri: image }}
-        style={styles.SingleCategory}
-      >
-        <Text style={styles.categoryName}>{name}</Text>
-      </ImageBackground>
-    </Pressable>
+    <ImageBackground
+      borderRadius={12}
+      source={{ uri: image }}
+      style={styles.SingleCategory}
+    >
+      <Text style={styles.categoryName}>{name}</Text>
+    </ImageBackground>
   );
 };
 

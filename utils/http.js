@@ -60,12 +60,12 @@ const getBooks = async (token) => {
 };
 
 //get book by id
-const getBookById = async (id, token) => {
+const getBookById = async (data, token) => {
   const response = await axios.get(
-    `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/books/${id}.json?auth=${token}`
+    `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories/${data.category}/books/${data.id}.json?auth=${token}`
   );
   const book = {
-    id,
+    id: data.id,
     bookName: response.data.bookName,
     author: response.data.author,
     category: response.data.category,

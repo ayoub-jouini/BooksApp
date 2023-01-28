@@ -14,11 +14,29 @@ import CategoriesScreen from './screens/CategoriesScreen';
 import { useContext } from 'react';
 import ProfileScreen from './screens/ProfileScreen';
 import { storeData } from './utils/http';
+import SingleCategoryScreen from './screens/SingleCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AuthenticatedStack = () => {
+  const CategoriesStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="allCategories"
+          component={CategoriesScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="category"
+          component={SingleCategoryScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   const Tabs = () => {
     return (
       <Tab.Navigator
@@ -39,7 +57,7 @@ const AuthenticatedStack = () => {
       >
         <Tab.Screen
           name="categories"
-          component={CategoriesScreen}
+          component={CategoriesStack}
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => (

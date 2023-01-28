@@ -1,17 +1,42 @@
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import colors from '../styles/colors';
+import { useContext, useEffect, useState } from 'react';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { AuthContext } from '../context/auth-context';
+import { getBookByCategory } from '../utils/http';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
-import BooksScrollHorizontal from '../components/BooksSection/BooksScrollHorizontal';
+import List from '../components/global/SearchBar/List';
+import BookPostHorizontal from '../components/global/BookPost/BookPostHorizontal';
+import colors from '../styles/colors';
+import typography from '../styles/typography';
 import SearchBar from '../components/global/SearchBar/SreachBar';
-import { useState } from 'react';
-import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
-const HomeScreen = ({ navigation }) => {
+const SingleCategoryScreen = ({ route, navigation }) => {
   const handleNavigation = () => {
     navigation.navigate('Profile');
   };
 
-  const categories = ['Fantasy', 'Non-Fiction', 'Young Adult', 'Horror'];
+  const categoryID = route.params.categoryID;
+
+  const [booksList, setBooksList] = useState([]);
+
+  const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { books, image, name } = await getBookByCategory(
+        categoryID,
+        authContext.token
+      );
+      setBooksList(books);
+    };
+    getData();
+  }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -53,13 +78,14 @@ const HomeScreen = ({ navigation }) => {
                   searchPhrase={searchPhrase}
                   handleSerchPhrase={handleSearchPhrase}
                 />
-                {/* {searchPhrase && (
+                {searchPhrase && (
                   <List
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
+                    data={booksList}
                   />
-                )} */}
+                )}
               </View>
             ) : (
               <Pressable onPress={handleDisplaySearch}>
@@ -69,23 +95,26 @@ const HomeScreen = ({ navigation }) => {
               </Pressable>
             )}
           </ScreenHeader>
-
           <ScrollView showsVerticalScrollIndicator={false}>
-            {categories.map((category, key) => (
-              <BooksScrollHorizontal
-                key={key}
-                category={category}
-                handleOpenBook={handleOpenBook}
-              />
-            ))}
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{categoryID}</Text>
+            </View>
+            <View style={styles.booksMarkContainer}>
+              {booksList.map((book, key) => (
+                <BookPostHorizontal
+                  key={key}
+                  id={book.id}
+                  image={book.image}
+                  category={book.category}
+                  name={book.bookName}
+                  author={book.author}
+                  rate={book.rate}
+                  price={book.price}
+                  handleOpenBook={handleOpenBook}
+                />
+              ))}
+            </View>
           </ScrollView>
-
-          {openBook && (
-            <BooksDetailsModal
-              openBook={openBook}
-              handleCloseBook={handleCloseBook}
-            />
-          )}
         </View>
       </View>
     </View>
@@ -124,6 +153,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  titleContainer: {
+    paddingVertical: 5,
+    alignItems: 'center',
+  },
+  title: {
+    fontFamily: 'Asap_400Regular',
+    fontWeight: 'bold',
+    color: colors.primary,
+    fontSize: typography.h1,
+  },
+  booksMarkContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
 });
 
-export default HomeScreen;
+export default SingleCategoryScreen;
