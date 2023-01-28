@@ -6,7 +6,7 @@ import SearchBar from '../components/global/SearchBar/SreachBar';
 import { useContext, useEffect, useState } from 'react';
 import List from '../components/global/SearchBar/List';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
-import { getBooks } from '../utils/http';
+import { getBookByCategory, getBooks } from '../utils/http';
 import { AuthContext } from '../context/auth-context';
 
 const HomeScreen = ({ navigation }) => {
@@ -14,16 +14,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('Profile');
   };
 
-  const authContext = useContext(AuthContext);
-  const [booksList, setBooksList] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getBooks(authContext.token);
-      setBooksList(data);
-    };
-    getData();
-  }, []);
+  const categories = ['Fantasy', 'Non-Fiction', 'Young Adult', 'Horror'];
 
   const [displaySearch, setDisplaySearch] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -65,14 +56,13 @@ const HomeScreen = ({ navigation }) => {
                   searchPhrase={searchPhrase}
                   handleSerchPhrase={handleSearchPhrase}
                 />
-                {searchPhrase && (
+                {/* {searchPhrase && (
                   <List
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
-                    data={booksList}
                   />
-                )}
+                )} */}
               </View>
             ) : (
               <Pressable onPress={handleDisplaySearch}>
@@ -82,9 +72,10 @@ const HomeScreen = ({ navigation }) => {
               </Pressable>
             )}
           </ScreenHeader>
-          {booksList && (
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <BooksScrollHorizontal
+
+          {/* {booksList && ( */}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/* <BooksScrollHorizontal
                 handleOpenBook={handleOpenBook}
                 title="Top Books"
                 booksList={booksList}
@@ -93,9 +84,16 @@ const HomeScreen = ({ navigation }) => {
                 handleOpenBook={handleOpenBook}
                 title="Classic Books"
                 booksList={booksList}
+              /> */}
+            {categories.map((category, key) => (
+              <BooksScrollHorizontal
+                key={key}
+                category={category}
+                handleOpenBook={handleOpenBook}
               />
-            </ScrollView>
-          )}
+            ))}
+          </ScrollView>
+          {/* )} */}
 
           {openBook && (
             <BooksDetailsModal

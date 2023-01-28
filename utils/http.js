@@ -78,23 +78,39 @@ const getBookById = async (id, token) => {
   return book;
 };
 
+//get books By Category
+const getBookByCategory = async (category, token) => {
+  let response;
+  try {
+    response = await axios.get(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories/${category}.json?auth=${token}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  const books = [];
+  const name = response.data.name;
+  const image = response.data.image;
+  console.log(name);
+
+  for (let key in response.data.books) {
+    const book = {
+      id: key,
+      bookName: response.data.books[key].bookName,
+      author: response.data.books[key].author,
+      category: response.data.books[key].category,
+      description: response.data.books[key].description,
+      price: response.data.books[key].price,
+      image: response.data.books[key].image,
+      rate: response.data.books[key].rate,
+    };
+    books.push(book);
+  }
+  return { books, image, name };
+};
+
 //get all categories
 const getCategories = async (token) => {
-  // const response = await axios.get(
-  //   `${process.env.BACKEND_URL}categories.json?auth=${token}`
-  // );
-
-  // const categories = [];
-
-  // for (const key in response.date) {
-  //   const category = {
-  //     id: key,
-  //     categoryName: response.data[key].categoryName,
-  //   };
-  //   categories.push(category);
-  // }
-
-  // return categories;
   let response;
   try {
     response = await axios.get(
@@ -193,6 +209,7 @@ export {
   deleteData,
   getBooks,
   getBookById,
+  getBookByCategory,
   getCategories,
   getCategoryById,
   getReviews,

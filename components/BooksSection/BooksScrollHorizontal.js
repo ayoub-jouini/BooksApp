@@ -2,11 +2,29 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import BookPost from '../global/BookPost/BookPost';
+import { useContext, useEffect, useState } from 'react';
+import { getBookByCategory } from '../../utils/http';
+import { AuthContext } from '../../context/auth-context';
 
-const BooksScrollHorizontal = ({ handleOpenBook, title, booksList }) => {
+const BooksScrollHorizontal = ({ handleOpenBook, category }) => {
+  const [booksList, setBooksList] = useState([]);
+
+  const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { books, image, name } = await getBookByCategory(
+        category,
+        authContext.token
+      );
+      setBooksList(books);
+    };
+    getData();
+  }, []);
+
   return (
     <View style={styles.booksSection}>
-      <Text style={styles.booksContainerTitle}>{title}</Text>
+      <Text style={styles.booksContainerTitle}>{category}</Text>
       <View>
         <ScrollView
           style={styles.booksContainer}
