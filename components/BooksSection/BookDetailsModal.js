@@ -79,7 +79,7 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
         `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${bookData.id}.json?auth=${authContext.token}`,
         {
           author: bookData.author,
-          bookName: bookData.name,
+          bookName: bookData.bookName,
           category: bookData.category,
           image: bookData.image,
           price: bookData.price,
