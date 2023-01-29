@@ -16,6 +16,7 @@ import CategoryPost from '../components/global/CategoryPost/CategoryPost';
 import { AuthContext } from '../context/auth-context';
 import { getBooks, getCategories } from '../utils/http';
 import axios from 'axios';
+import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
 const CategoriesScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -25,6 +26,8 @@ const CategoriesScreen = ({ navigation }) => {
   const handleNavigateToCategory = (id) => {
     navigation.navigate('category', { categoryID: id });
   };
+
+  const [openBook, setOpenBook] = useState(null);
 
   const authContext = useContext(AuthContext);
   const [categoriesList, setCategoriesList] = useState([]);
@@ -136,6 +139,12 @@ const CategoriesScreen = ({ navigation }) => {
                   <CategoryPost image={category.image} name={category.name} />
                 </Pressable>
               ))}
+              {openBook && (
+                <BooksDetailsModal
+                  openBook={openBook}
+                  handleCloseBook={handleCloseBook}
+                />
+              )}
             </View>
           </ScrollView>
         </View>
