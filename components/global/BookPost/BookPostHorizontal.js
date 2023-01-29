@@ -90,7 +90,7 @@ const BookPostHorizontal = ({
     );
   }
   return (
-    <Pressable onPress={() => handleOpenBook(id)}>
+    <Pressable onPress={() => handleOpenBook(id, category)}>
       <View style={styles.bookPost}>
         <View style={styles.bookHeader}>
           <View style={styles.bookimage}>

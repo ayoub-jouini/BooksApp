@@ -28,24 +28,24 @@ const AuthContextProvider = ({ children }) => {
       }
     };
     fetchUserData();
-  }, []);
+  }, [authToken, userId, userAdress]);
 
-  const authenticate = (token, userId, userAdress) => {
+  const authenticate = async (token, userId, userAdress) => {
     setAuthToken(token);
-    AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('token', token);
     setUserId(token);
-    AsyncStorage.setItem('userId', userId);
+    await AsyncStorage.setItem('userId', userId);
     setUserAdress(token);
-    AsyncStorage.setItem('userAdress', userAdress);
+    await AsyncStorage.setItem('userAdress', userAdress);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setAuthToken(null);
-    AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('token');
     setUserId(null);
-    AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('userId');
     setUserAdress(null);
-    AsyncStorage.removeItem('userAdress');
+    await AsyncStorage.removeItem('userAdress');
   };
 
   const value = {

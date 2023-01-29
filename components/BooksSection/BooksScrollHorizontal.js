@@ -16,7 +16,6 @@ const BooksScrollHorizontal = ({ openBook, handleOpenBook, category }) => {
   const [booksList, setBooksList] = useState([]);
 
   const authContext = useContext(AuthContext);
-
   useEffect(() => {
     const getData = async () => {
       const { books, image, name } = await getBookByCategory(

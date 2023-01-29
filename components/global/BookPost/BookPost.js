@@ -17,7 +17,6 @@ const BookPost = ({
   openBook,
 }) => {
   const authContext = useContext(AuthContext);
-
   const [favIcon, setFavIcon] = useState(false);
 
   useEffect(() => {
@@ -32,6 +31,7 @@ const BookPost = ({
         console.log(err);
       }
     };
+
     getData();
   }, [openBook]);
 

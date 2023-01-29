@@ -50,8 +50,9 @@ const BookMarksScreen = ({ navigation }) => {
 
   const [openBook, setOpenBook] = useState(null);
 
-  const handleOpenBook = (id) => {
-    setOpenBook(id);
+  const handleOpenBook = (id, category) => {
+    setOpenBook({ id, category });
+    setSearchPhrase('');
   };
 
   const handleCloseBook = () => {
