@@ -20,7 +20,12 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
   const [openBookRateModal, setOpenBookRateModal] = useState(false);
 
   const handleOpenBookRateModel = () => {
-    setOpenBookRateModal(!openBookRateModal);
+    handleAddFavBook();
+    setOpenBookRateModal(true);
+  };
+
+  const handleCloseBookRateModel = () => {
+    setOpenBookRateModal(false);
   };
 
   useEffect(() => {
@@ -79,6 +84,7 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
           image: bookData.image,
           price: bookData.price,
           rate: bookData.rate,
+          userRate: 0,
         }
       );
 
@@ -98,12 +104,17 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
       <Image
         key={'c' + i}
         source={require('../../assets/icons/starContained.png')}
+        style={styles.starIcon}
       />
     );
   }
   for (let i = 0; i < emptyStarsNumber; i++) {
     emptyStars.push(
-      <Image key={i} source={require('../../assets/icons/starContained.png')} />
+      <Image
+        key={i}
+        source={require('../../assets/icons/star.png')}
+        style={styles.starIcon}
+      />
     );
   }
 
@@ -189,8 +200,10 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
         {openBookRateModal && (
           <BookRateModal
             openBookRateModal={openBookRateModal}
-            handleOpenBookRateModel={handleOpenBookRateModel}
+            handleOpenBookRateModel={handleCloseBookRateModel}
             id={bookData.id}
+            userId={authContext.userId}
+            token={authContext.token}
           />
         )}
       </View>
@@ -278,6 +291,10 @@ const styles = StyleSheet.create({
   favIconsContainer: {
     position: 'absolute',
     right: 50,
+  },
+  starIcon: {
+    width: 14,
+    height: 14,
   },
 });
 

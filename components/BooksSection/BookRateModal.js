@@ -3,37 +3,84 @@ import colors from '../../styles/colors';
 import Button from '../global/Button/Button';
 import typography from '../../styles/typography';
 import { booksList } from '../../utils/data';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const BookRateModal = ({ openBookRateModal, handleOpenBookRateModel, id }) => {
-  // const bookData = booksList.find((book) => book.id === id);
+const BookRateModal = ({
+  openBookRateModal,
+  handleOpenBookRateModel,
+  id,
+  userId,
+  token,
+}) => {
+  const [rateNumber, setRateNumber] = useState();
 
-  // const emptyStarsNumber = 5 - bookData.rate;
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${userId}/books/${id}.json?auth=${token}`
+        );
+        !!response.data
+          ? setRateNumber(response.data.userRate)
+          : setRateNumber(0);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  // let stars = [];
-  // let emptyStars = [];
+    getData();
+  }, [openBookRateModal, rateNumber]);
 
-  // for (let i = 0; i < bookData.rate; i++) {
-  //   stars.push(
-  //     <View key={'c' + i} style={styles.starContainer}>
-  //       <Image
-  //         resizeMode="contain"
-  //         style={styles.star}
-  //         source={require('../../assets/icons/starContained.png')}
-  //       />
-  //     </View>
-  //   );
-  // }
-  // for (let i = 0; i < emptyStarsNumber; i++) {
-  //   emptyStars.push(
-  //     <View key={i} style={styles.starContainer}>
-  //       <Image
-  //         resizeMode="contain"
-  //         style={styles.star}
-  //         source={require('../../assets/icons/starContained.png')}
-  //       />
-  //     </View>
-  //   );
-  // }
+  const handleRateBook = async (nb) => {
+    let response;
+    setRateNumber(nb);
+    try {
+      response = await axios.patch(
+        `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${userId}/books/${id}.json?auth=${token}`,
+        {
+          userRate: nb,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  let stars = [];
+  let emptyStars = [];
+
+  for (let i = 1; i <= rateNumber; i++) {
+    stars.push(
+      <Pressable
+        key={'c' + i}
+        style={styles.starContainer}
+        onPress={() => handleRateBook(i)}
+      >
+        <Image
+          resizeMode="contain"
+          style={styles.star}
+          source={require('../../assets/icons/starContained.png')}
+        />
+      </Pressable>
+    );
+  }
+  for (let i = rateNumber + 1; i <= 5; i++) {
+    emptyStars.push(
+      <Pressable
+        key={i}
+        style={styles.starContainer}
+        onPress={() => handleRateBook(i)}
+      >
+        <Image
+          resizeMode="contain"
+          style={styles.star}
+          source={require('../../assets/icons/star.png')}
+        />
+      </Pressable>
+    );
+  }
 
   return (
     <Modal visible={openBookRateModal} transparent={true} style={styles.modal}>
@@ -41,43 +88,7 @@ const BookRateModal = ({ openBookRateModal, handleOpenBookRateModel, id }) => {
         <View style={styles.mainContainer}>
           <Text style={styles.firstLine}>Your opinion matter to us!</Text>
           <Text style={styles.secondLine}>do you like this book?</Text>
-          <View style={styles.bookRateContainer}>
-            <View style={styles.starContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.star}
-                source={require('../../assets/icons/starContained.png')}
-              />
-            </View>
-            <View style={styles.starContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.star}
-                source={require('../../assets/icons/starContained.png')}
-              />
-            </View>
-            <View style={styles.starContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.star}
-                source={require('../../assets/icons/starContained.png')}
-              />
-            </View>
-            <View style={styles.starContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.star}
-                source={require('../../assets/icons/starContained.png')}
-              />
-            </View>
-            <View style={styles.starContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.star}
-                source={require('../../assets/icons/starContained.png')}
-              />
-            </View>
-          </View>
+          <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
           <Button type="contained" text="Submit" />
           <Pressable onPress={handleOpenBookRateModel}>
             <Text style={styles.laterButton}>Later</Text>

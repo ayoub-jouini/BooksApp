@@ -60,6 +60,7 @@ const BookPostHorizontal = ({
           image: image,
           price: price,
           rate: rate,
+          userRate: 0,
         }
       );
 
@@ -78,6 +79,7 @@ const BookPostHorizontal = ({
       <Image
         key={'c' + i}
         source={require('../../../assets/icons/starContained.png')}
+        style={styles.starIcon}
       />
     );
   }
@@ -85,7 +87,8 @@ const BookPostHorizontal = ({
     emptyStars.push(
       <Image
         key={i}
-        source={require('../../../assets/icons/starContained.png')}
+        source={require('../../../assets/icons/star.png')}
+        style={styles.starIcon}
       />
     );
   }
@@ -205,6 +208,10 @@ const styles = StyleSheet.create({
     right: 20,
     width: 25,
     height: 45,
+  },
+  starIcon: {
+    width: 14,
+    height: 14,
   },
 });
 
