@@ -15,6 +15,7 @@ import typography from '../styles/typography';
 import CategoryPost from '../components/global/CategoryPost/CategoryPost';
 import { AuthContext } from '../context/auth-context';
 import { getBooks, getCategories } from '../utils/http';
+import axios from 'axios';
 
 const CategoriesScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -27,16 +28,6 @@ const CategoriesScreen = ({ navigation }) => {
 
   const authContext = useContext(AuthContext);
   const [categoriesList, setCategoriesList] = useState([]);
-
-  const [booksList, setBooksList] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getBooks(authContext.token);
-      setBooksList(data);
-    };
-    getData();
-  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -56,6 +47,46 @@ const CategoriesScreen = ({ navigation }) => {
   const handleDisplaySearch = () => {
     setDisplaySearch(!displaySearch);
   };
+
+  //open bookDetailModel
+  const handleOpenBook = (id, category) => {
+    setOpenBook({ id, category });
+    setSearchPhrase('');
+  };
+
+  const handleCloseBook = () => {
+    setOpenBook(null);
+  };
+
+  //getDatafor searchBar list
+  const [searchBarData, setSearchBarData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories.json?auth=${authContext.token}`
+        );
+
+        let bookList = [];
+        for (let keyCat in response.data) {
+          for (let keyBook in response.data[keyCat].books) {
+            console.log(keyBook);
+            const bookItem = {
+              id: keyBook,
+              bookName: response.data[keyCat].books[keyBook].bookName,
+            };
+            bookList.push(bookItem);
+          }
+        }
+
+        setSearchBarData(bookList);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
@@ -79,7 +110,7 @@ const CategoriesScreen = ({ navigation }) => {
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
-                    data={booksList}
+                    data={searchBarData}
                   />
                 )}
               </View>

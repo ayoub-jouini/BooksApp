@@ -3,13 +3,18 @@ import colors from '../styles/colors';
 import ScreenHeader from '../components/ScreenHeader/SreenHeader';
 import BooksScrollHorizontal from '../components/BooksSection/BooksScrollHorizontal';
 import SearchBar from '../components/global/SearchBar/SreachBar';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
+import List from '../components/global/SearchBar/List';
+import { AuthContext } from '../context/auth-context';
+import axios from 'axios';
 
 const HomeScreen = ({ navigation }) => {
   const handleNavigation = () => {
     navigation.navigate('Profile');
   };
+
+  const authContext = useContext(AuthContext);
 
   const categories = ['Fantasy', 'Non-Fiction', 'Young Adult', 'Horror'];
 
@@ -35,6 +40,36 @@ const HomeScreen = ({ navigation }) => {
     setDisplaySearch(!displaySearch);
   };
 
+  //getDatafor searchBar list
+  const [searchBarData, setSearchBarData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories.json?auth=${authContext.token}`
+        );
+
+        let bookList = [];
+        for (let keyCat in response.data) {
+          for (let keyBook in response.data[keyCat].books) {
+            console.log(keyBook);
+            const bookItem = {
+              id: keyBook,
+              bookName: response.data[keyCat].books[keyBook].bookName,
+            };
+            bookList.push(bookItem);
+          }
+        }
+
+        setSearchBarData(bookList);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
@@ -53,13 +88,14 @@ const HomeScreen = ({ navigation }) => {
                   searchPhrase={searchPhrase}
                   handleSerchPhrase={handleSearchPhrase}
                 />
-                {/* {searchPhrase && (
+                {searchPhrase && (
                   <List
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
+                    data={searchBarData}
                   />
-                )} */}
+                )}
               </View>
             ) : (
               <Pressable onPress={handleDisplaySearch}>

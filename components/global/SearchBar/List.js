@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
 import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
+import { AuthContext } from '../../../context/auth-context';
+import axios from 'axios';
 
 const Item = ({ id, name, handleOpenBook }) => (
   <Pressable onPress={() => handleOpenBook(id)} style={styles.itemContainer}>
@@ -11,7 +13,7 @@ const Item = ({ id, name, handleOpenBook }) => (
   </Pressable>
 );
 
-const List = ({ searchPhrase, handleClicked, data, handleOpenBook }) => {
+const List = ({ searchPhrase, handleClicked, handleOpenBook, data }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === '') {

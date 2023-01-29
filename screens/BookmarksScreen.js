@@ -19,6 +19,7 @@ import { AuthContext } from '../context/auth-context';
 import { getUserBooks } from '../utils/http';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 import { useFocusEffect } from '@react-navigation/native';
+import axios from 'axios';
 
 const BookMarksScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -28,13 +29,13 @@ const BookMarksScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext);
   const [booksList, setBooksList] = useState([]);
 
-  useFocusEffect(() => {
+  useEffect(() => {
     const getData = async () => {
       const data = await getUserBooks(authContext.userId, authContext.token);
       setBooksList(data);
     };
     getData();
-  });
+  }, [booksList]);
 
   const [displaySearch, setDisplaySearch] = useState(false);
 
@@ -82,7 +83,6 @@ const BookMarksScreen = ({ navigation }) => {
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
-                    data={booksList}
                   />
                 )}
               </View>
@@ -94,28 +94,26 @@ const BookMarksScreen = ({ navigation }) => {
               </Pressable>
             )}
           </ScreenHeader>
-          <RefreshControl>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>Your Favorite Books</Text>
-              </View>
-              <View style={styles.booksMarkContainer}>
-                {booksList.map((book, key) => (
-                  <BookPostHorizontal
-                    key={key}
-                    id={book.id}
-                    image={book.image}
-                    category={book.category}
-                    name={book.bookName}
-                    author={book.author}
-                    rate={book.rate}
-                    price={book.price}
-                    handleOpenBook={handleOpenBook}
-                  />
-                ))}
-              </View>
-            </ScrollView>
-          </RefreshControl>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Your Favorite Books</Text>
+            </View>
+            <View style={styles.booksMarkContainer}>
+              {booksList.map((book, key) => (
+                <BookPostHorizontal
+                  key={key}
+                  id={book.id}
+                  image={book.image}
+                  category={book.category}
+                  name={book.bookName}
+                  author={book.author}
+                  rate={book.rate}
+                  price={book.price}
+                  handleOpenBook={handleOpenBook}
+                />
+              ))}
+            </View>
+          </ScrollView>
           {openBook && (
             <BooksDetailsModal
               openBook={openBook}

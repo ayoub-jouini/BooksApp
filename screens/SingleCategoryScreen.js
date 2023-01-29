@@ -16,6 +16,7 @@ import colors from '../styles/colors';
 import typography from '../styles/typography';
 import SearchBar from '../components/global/SearchBar/SreachBar';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
+import axios from 'axios';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
   const handleNavigation = () => {
@@ -61,6 +62,36 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     setDisplaySearch(!displaySearch);
   };
 
+  //getDatafor searchBar list
+  const [searchBarData, setSearchBarData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/categories.json?auth=${authContext.token}`
+        );
+
+        let bookList = [];
+        for (let keyCat in response.data) {
+          for (let keyBook in response.data[keyCat].books) {
+            console.log(keyBook);
+            const bookItem = {
+              id: keyBook,
+              bookName: response.data[keyCat].books[keyBook].bookName,
+            };
+            bookList.push(bookItem);
+          }
+        }
+
+        setSearchBarData(bookList);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.mainContainer}>
@@ -84,7 +115,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     handleOpenBook={handleOpenBook}
                     searchPhrase={searchPhrase}
                     handleClicked={handleSearchPhrase}
-                    data={booksList}
+                    data={searchBarData}
                   />
                 )}
               </View>
