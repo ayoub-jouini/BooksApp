@@ -15,6 +15,7 @@ import BookPostHorizontal from '../components/global/BookPost/BookPostHorizontal
 import colors from '../styles/colors';
 import typography from '../styles/typography';
 import SearchBar from '../components/global/SearchBar/SreachBar';
+import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
   const handleNavigation = () => {
@@ -43,9 +44,8 @@ const SingleCategoryScreen = ({ route, navigation }) => {
 
   const [openBook, setOpenBook] = useState(null);
 
-  const handleOpenBook = (id, category) => {
-    setOpenBook({ id, category });
-    setSearchPhrase('');
+  const handleOpenBook = (id) => {
+    setOpenBook(id);
   };
 
   const handleCloseBook = () => {
@@ -111,10 +111,17 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                   rate={book.rate}
                   price={book.price}
                   handleOpenBook={handleOpenBook}
+                  openBook={openBook}
                 />
               ))}
             </View>
           </ScrollView>
+          {openBook && (
+            <BooksDetailsModal
+              openBook={openBook}
+              handleCloseBook={handleCloseBook}
+            />
+          )}
         </View>
       </View>
     </View>

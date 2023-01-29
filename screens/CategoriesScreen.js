@@ -15,7 +15,6 @@ import typography from '../styles/typography';
 import CategoryPost from '../components/global/CategoryPost/CategoryPost';
 import { AuthContext } from '../context/auth-context';
 import { getBooks, getCategories } from '../utils/http';
-import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
 
 const CategoriesScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -48,19 +47,10 @@ const CategoriesScreen = ({ navigation }) => {
   }, []);
 
   const [displaySearch, setDisplaySearch] = useState(false);
-  const [openBook, setOpenBook] = useState(null);
   const [searchPhrase, setSearchPhrase] = useState('');
 
   const handleSearchPhrase = (value) => {
     setSearchPhrase(value);
-  };
-
-  const handleOpenBook = (id) => {
-    setOpenBook(id);
-    setSearchPhrase('');
-  };
-  const handleCloseBook = () => {
-    setOpenBook(null);
   };
 
   const handleDisplaySearch = () => {
@@ -116,12 +106,6 @@ const CategoriesScreen = ({ navigation }) => {
               ))}
             </View>
           </ScrollView>
-          {openBook && (
-            <BooksDetailsModal
-              openBook={openBook}
-              handleCloseBook={handleCloseBook}
-            />
-          )}
         </View>
       </View>
     </View>

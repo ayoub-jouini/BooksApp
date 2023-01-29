@@ -76,6 +76,7 @@ const HomeScreen = ({ navigation }) => {
                 key={key}
                 category={category}
                 handleOpenBook={handleOpenBook}
+                openBook={openBook}
               />
             ))}
           </ScrollView>

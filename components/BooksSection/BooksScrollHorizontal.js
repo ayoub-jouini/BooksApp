@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from 'react';
 import { getBookByCategory } from '../../utils/http';
 import { AuthContext } from '../../context/auth-context';
 
-const BooksScrollHorizontal = ({ handleOpenBook, category }) => {
+const BooksScrollHorizontal = ({ openBook, handleOpenBook, category }) => {
   const [booksList, setBooksList] = useState([]);
 
   const authContext = useContext(AuthContext);
@@ -49,6 +49,7 @@ const BooksScrollHorizontal = ({ handleOpenBook, category }) => {
                 rate={book.rate}
                 price={book.price}
                 handleOpenBook={handleOpenBook}
+                openBook={openBook}
               />
             ))}
           </ScrollView>

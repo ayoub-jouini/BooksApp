@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
-import { booksList } from '../../utils/data';
 import BookRateModal from './BookRateModal';
 import { AuthContext } from '../../context/auth-context';
 import { getBookById } from '../../utils/http';
+import axios from 'axios';
 
 const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,12 +34,59 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
     const getData = async () => {
       const data = await getBookById(openBook, authContext.token);
       setBookData(data);
+
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${data.id}.json?auth=${authContext.token}`
+        );
+        !response.data ? setFavIcon(false) : setFavIcon(true);
+      } catch (err) {
+        console.log(err);
+      }
     };
+
     getData();
   }, []);
   if (bookData === []) {
     return <LoadingOverlay color={colors.primary} />;
   }
+
+  const [favIcon, setFavIcon] = useState(false);
+
+  const handleDeleteFavBook = async () => {
+    let response;
+    try {
+      response = await axios.delete(
+        `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${bookData.id}.json?auth=${authContext.token}`
+      );
+
+      setFavIcon(false);
+    } catch (err) {
+      console.log('fama 8alta');
+    }
+  };
+
+  const handleAddFavBook = async () => {
+    let response;
+    try {
+      response = await axios.put(
+        `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${bookData.id}.json?auth=${authContext.token}`,
+        {
+          author: bookData.author,
+          bookName: bookData.name,
+          category: bookData.category,
+          image: bookData.image,
+          price: bookData.price,
+          rate: bookData.rate,
+        }
+      );
+
+      setFavIcon(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const emptyStarsNumber = 5 - bookData.rate;
 
@@ -68,12 +115,36 @@ const BooksDetailsModal = ({ openBook, handleCloseBook }) => {
       style={styles.modal}
     >
       <View style={styles.mainContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Pressable onPress={handleCloseBook}>
-            <View style={styles.iconBox}>
-              <Image source={require('../../assets/icons/backArrow.png')} />
-            </View>
+        {favIcon ? (
+          <Pressable
+            onPress={handleDeleteFavBook}
+            style={styles.favIconsContainer}
+          >
+            <Image
+              style={styles.favIcon}
+              source={require('../../assets/icons/favoriteContained.png')}
+            />
           </Pressable>
+        ) : (
+          <Pressable
+            onPress={handleAddFavBook}
+            style={styles.favIconsContainer}
+          >
+            <Image
+              style={styles.favIcon}
+              source={require('../../assets/icons/favorite.png')}
+            />
+          </Pressable>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.iconBox}>
+            <Pressable
+              onPress={handleCloseBook}
+              style={styles.backIconContainer}
+            >
+              <Image source={require('../../assets/icons/backArrow.png')} />
+            </Pressable>
+          </View>
           <View style={styles.bookDetailsContainer}>
             <Image
               resizeMode="contain"
@@ -196,6 +267,17 @@ const styles = StyleSheet.create({
     color: colors.tertiary,
     lineHeight: 20,
     textAlign: 'justify',
+  },
+  favIcon: {
+    width: 30,
+    height: 55,
+  },
+  backIconContainer: {
+    width: '20%',
+  },
+  favIconsContainer: {
+    position: 'absolute',
+    right: 50,
   },
 });
 

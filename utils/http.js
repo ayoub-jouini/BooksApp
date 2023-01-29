@@ -145,24 +145,6 @@ const getCategoryById = async (id, token) => {
   return category;
 };
 
-//get all the reviews by book
-const getReviews = async (book, token) => {
-  const response = await axios.get(
-    `${process.env.BACKEND_URL}reviews.json?idBook=${book}&auth=${token}`
-  );
-  const reviews = [];
-  for (const key in response.date) {
-    const review = {
-      id: key,
-      idUser: response.data[key].idUser,
-      rating: response.data[key].rating,
-      review: response.data[key].review,
-    };
-    reviews.push(review);
-  }
-  return reviews;
-};
-
 //get all users
 const getUsers = async (token) => {
   const response = await axios.get(
@@ -203,6 +185,33 @@ const getUserById = async (id, token) => {
   return category;
 };
 
+const getUserBooks = async (userId, token) => {
+  let response;
+  try {
+    response = await axios.get(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${userId}/books.json?auth=${token}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  const books = [];
+
+  for (let key in response.data) {
+    const book = {
+      id: key,
+      bookName: response.data[key].bookName,
+      author: response.data[key].author,
+      category: response.data[key].category,
+      description: response.data[key].description,
+      price: response.data[key].price,
+      image: response.data[key].image,
+      rate: response.data[key].rate,
+    };
+    books.push(book);
+  }
+  return books;
+};
+
 export {
   storeData,
   updateData,
@@ -212,7 +221,7 @@ export {
   getBookByCategory,
   getCategories,
   getCategoryById,
-  getReviews,
   getUsers,
   getUserById,
+  getUserBooks,
 };

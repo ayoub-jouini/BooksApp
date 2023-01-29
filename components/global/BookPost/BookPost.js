@@ -1,6 +1,9 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import colors from '../../../styles/colors';
 import typography from '../../../styles/typography';
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../../../context/auth-context';
 
 const BookPost = ({
   id,
@@ -11,7 +14,61 @@ const BookPost = ({
   price,
   rate,
   handleOpenBook,
+  openBook,
 }) => {
+  const authContext = useContext(AuthContext);
+
+  const [favIcon, setFavIcon] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${id}.json?auth=${authContext.token}`
+        );
+        !response.data ? setFavIcon(false) : setFavIcon(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, [openBook]);
+
+  const handleDeleteFavBook = async () => {
+    let response;
+    try {
+      response = await axios.delete(
+        `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${id}.json?auth=${authContext.token}`
+      );
+
+      setFavIcon(false);
+    } catch (err) {
+      console.log('fama 8alta');
+    }
+  };
+
+  const handleAddFavBook = async () => {
+    let response;
+    try {
+      response = await axios.put(
+        `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}/books/${id}.json?auth=${authContext.token}`,
+        {
+          author: author,
+          bookName: name,
+          category: category,
+          image: image,
+          price: price,
+          rate: rate,
+        }
+      );
+
+      setFavIcon(true);
+    } catch (err) {
+      console.log('fama 8alta');
+    }
+  };
+
   const emptyStarsNumber = 5 - rate;
 
   let stars = [];
@@ -39,6 +96,27 @@ const BookPost = ({
           <View style={styles.bookimage}>
             <Image source={{ uri: image }} style={{ width: 81, height: 128 }} />
           </View>
+          {favIcon ? (
+            <Pressable
+              onPress={handleDeleteFavBook}
+              style={styles.favIconsContainer}
+            >
+              <Image
+                style={styles.favIcon}
+                source={require('../../../assets/icons/favoriteWhiteContained.png')}
+              />
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={handleAddFavBook}
+              style={styles.favIconsContainer}
+            >
+              <Image
+                style={styles.favIcon}
+                source={require('../../../assets/icons/favoriteWhite.png')}
+              />
+            </Pressable>
+          )}
         </View>
         <View style={styles.bookBody}>
           <Text style={styles.bookCategory}>{category}</Text>
@@ -111,6 +189,17 @@ const styles = StyleSheet.create({
   bookRateContainer: {
     marginTop: 3,
     flexDirection: 'row',
+  },
+  favIconsContainer: {
+    position: 'absolute',
+    right: 15,
+    top: -5,
+    width: 25,
+    height: 50,
+  },
+  favIcon: {
+    width: 25,
+    height: 50,
   },
 });
 
