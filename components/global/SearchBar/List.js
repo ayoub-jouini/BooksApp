@@ -5,8 +5,11 @@ import typography from '../../../styles/typography';
 import { AuthContext } from '../../../context/auth-context';
 import axios from 'axios';
 
-const Item = ({ id, name, handleOpenBook }) => (
-  <Pressable onPress={() => handleOpenBook(id)} style={styles.itemContainer}>
+const Item = ({ id, name, category, handleOpenBook }) => (
+  <Pressable
+    onPress={() => handleOpenBook(id, category)}
+    style={styles.itemContainer}
+  >
     <View style={styles.item}>
       <Text style={styles.title}>{name}</Text>
     </View>
@@ -21,6 +24,7 @@ const List = ({ searchPhrase, handleClicked, handleOpenBook, data }) => {
         <Item
           id={item.id}
           name={item.bookName}
+          category={item.category}
           handleOpenBook={handleOpenBook}
         />
       );
@@ -35,6 +39,7 @@ const List = ({ searchPhrase, handleClicked, handleOpenBook, data }) => {
         <Item
           id={item.id}
           name={item.bookName}
+          category={item.category}
           handleOpenBook={handleOpenBook}
         />
       );

@@ -57,6 +57,7 @@ const HomeScreen = ({ navigation }) => {
             const bookItem = {
               id: keyBook,
               bookName: response.data[keyCat].books[keyBook].bookName,
+              category: keyCat,
             };
             bookList.push(bookItem);
           }
