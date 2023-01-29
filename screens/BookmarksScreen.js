@@ -18,8 +18,6 @@ import BookPostHorizontal from '../components/global/BookPost/BookPostHorizontal
 import { AuthContext } from '../context/auth-context';
 import { getUserBooks } from '../utils/http';
 import BooksDetailsModal from '../components/BooksSection/BookDetailsModal';
-import { useFocusEffect } from '@react-navigation/native';
-import axios from 'axios';
 
 const BookMarksScreen = ({ navigation }) => {
   const handleNavigation = () => {
@@ -99,19 +97,25 @@ const BookMarksScreen = ({ navigation }) => {
               <Text style={styles.title}>Your Favorite Books</Text>
             </View>
             <View style={styles.booksMarkContainer}>
-              {booksList.map((book, key) => (
-                <BookPostHorizontal
-                  key={key}
-                  id={book.id}
-                  image={book.image}
-                  category={book.category}
-                  name={book.bookName}
-                  author={book.author}
-                  rate={book.rate}
-                  price={book.price}
-                  handleOpenBook={handleOpenBook}
-                />
-              ))}
+              {booksList.map((book, key) => {
+                let bookRate;
+                book.userRate
+                  ? (bookRate = book.userRate)
+                  : (bookRate = book.rate);
+                return (
+                  <BookPostHorizontal
+                    key={key}
+                    id={book.id}
+                    image={book.image}
+                    category={book.category}
+                    name={book.bookName}
+                    author={book.author}
+                    rate={bookRate}
+                    price={book.price}
+                    handleOpenBook={handleOpenBook}
+                  />
+                );
+              })}
             </View>
           </ScrollView>
           {openBook && (

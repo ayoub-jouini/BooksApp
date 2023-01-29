@@ -206,6 +206,7 @@ const getUserBooks = async (userId, token) => {
       price: response.data[key].price,
       image: response.data[key].image,
       rate: response.data[key].rate,
+      userRate: response.data[key].userRate,
     };
     books.push(book);
   }

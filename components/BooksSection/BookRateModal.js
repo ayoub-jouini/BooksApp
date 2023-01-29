@@ -89,7 +89,11 @@ const BookRateModal = ({
           <Text style={styles.firstLine}>Your opinion matter to us!</Text>
           <Text style={styles.secondLine}>do you like this book?</Text>
           <View style={styles.bookRateContainer}>{[stars, emptyStars]}</View>
-          <Button type="contained" text="Submit" />
+          <Button
+            type="contained"
+            text="Submit"
+            handlePress={handleOpenBookRateModel}
+          />
           <Pressable onPress={handleOpenBookRateModel}>
             <Text style={styles.laterButton}>Later</Text>
           </Pressable>
