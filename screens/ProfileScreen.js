@@ -3,8 +3,9 @@ import colors from '../styles/colors';
 import typography from '../styles/typography';
 import Button from '../components/global/Button/Button';
 import UserInfo from '../components/global/UserInfo/UserInfo';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth-context';
+import axios from 'axios';
 
 const ProfileScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext);
@@ -16,6 +17,26 @@ const ProfileScreen = ({ navigation }) => {
   const handleLogOut = () => {
     authContext.logout();
   };
+
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    const getData = async () => {
+      let response;
+      try {
+        response = await axios.get(
+          `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${authContext.userId}.json?auth=${authContext.token}`
+        );
+        setUserData({
+          firstName: response.data.firstName,
+          lastName: response.data.LastName,
+          email: response.data.email,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
 
   return (
     <View style={styles.screenContainer}>
@@ -42,9 +63,12 @@ const ProfileScreen = ({ navigation }) => {
             <Button type="contained" text="Change Phote" />
           </View>
           <View style={styles.userInfo}>
-            <UserInfo attribute="Full Name" value="Foulen El Fouleni" />
-            <UserInfo attribute="Full Name" value="Foulen El Fouleni" />
-            <UserInfo attribute="Full Name" value="Foulen El Fouleni" />
+            <UserInfo
+              attribute="Full Name"
+              value={`${userData.firstName} ${userData.lastName}`}
+            />
+            <UserInfo attribute="email" value={`${userData.email}`} />
+            <UserInfo attribute="Password" value="Change Password" />
           </View>
           <View style={styles.logoutSection}>
             <Pressable onPress={handleLogOut} style={styles.logoutContainer}>

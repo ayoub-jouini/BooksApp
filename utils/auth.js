@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, firstName, LastName) => {
   let response;
   try {
     response = await axios.post(
@@ -18,6 +18,19 @@ const createUser = async (email, password) => {
   const token = response.data.idToken;
   const userAdress = response.data.email;
   const userId = response.data.localId;
+
+  try {
+    await axios.put(
+      `https://booksapp-e033f-default-rtdb.europe-west1.firebasedatabase.app/Users/${userId}.json?auth=${token}`,
+      {
+        firstName: firstName,
+        LastName: LastName,
+        email: userAdress,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
 
   return { token, userAdress, userId };
 };

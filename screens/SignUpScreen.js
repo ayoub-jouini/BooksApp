@@ -41,7 +41,12 @@ const SignUpScreen = ({ navigation }) => {
   const handleSignUp = async () => {
     setIsAuth(true);
     try {
-      const { token, userAdress, userId } = await createUser(email, password);
+      const { token, userAdress, userId } = await createUser(
+        email,
+        password,
+        firstName,
+        lastName
+      );
       authContext.authenticate(token, userId, userAdress);
     } catch (e) {
       Alert.alert(
