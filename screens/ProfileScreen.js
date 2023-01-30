@@ -56,11 +56,13 @@ const ProfileScreen = ({ navigation }) => {
           </View>
           <View style={styles.imageNameContainer}>
             <Image
-              source={require('../assets/images/classics.jpg')}
+              // source={require('../assets/images/classics.jpg')}
               style={styles.profileImage}
             />
-            <Text style={styles.userName}>Foulen El Fouleni</Text>
-            <Button type="contained" text="Change Phote" />
+            <Text
+              style={styles.userName}
+            >{`${userData.firstName} ${userData.lastName}`}</Text>
+            <Button type="contained" text="Change Photo" />
           </View>
           <View style={styles.userInfo}>
             <UserInfo

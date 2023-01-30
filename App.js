@@ -13,7 +13,6 @@ import colors from './styles/colors';
 import CategoriesScreen from './screens/CategoriesScreen';
 import { useContext } from 'react';
 import ProfileScreen from './screens/ProfileScreen';
-import { storeData } from './utils/http';
 import SingleCategoryScreen from './screens/SingleCategoryScreen';
 
 const Stack = createNativeStackNavigator();
