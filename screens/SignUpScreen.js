@@ -105,6 +105,7 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="Password"
             type="default"
             text=""
+            secure
           />
           <View style={styles.button}>
             <Button

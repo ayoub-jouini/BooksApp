@@ -79,6 +79,7 @@ const SignInModal = ({ showModal, handleShowModal }) => {
             placeholder="Password"
             type="default"
             text=""
+            secure
           />
           <Button
             text="LOG IN"
